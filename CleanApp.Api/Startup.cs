@@ -14,7 +14,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace CleanApp.Api
 {
@@ -78,6 +81,16 @@ namespace CleanApp.Api
             //Repositorios
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+            services.AddSwaggerGen(doc =>
+            {
+                doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Cleap App API", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                doc.IncludeXmlComments(xmlPath);
+            });
+
             services.AddMvc(setup =>
             {
                 setup.Filters.Add<ValidationFilter>();
@@ -96,6 +109,12 @@ namespace CleanApp.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Clean App API v1");
+                options.RoutePrefix = string.Empty;
+            });
             app.UseRouting();
             app.UseAuthorization();
 

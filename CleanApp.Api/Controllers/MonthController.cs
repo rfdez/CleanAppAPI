@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanApp.Api.Responses;
@@ -13,6 +14,7 @@ using Newtonsoft.Json;
 
 namespace CleanApp.Api.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class MonthController : ControllerBase
@@ -28,7 +30,15 @@ namespace CleanApp.Api.Controllers
             _uriSerice = uriService;
         }
 
+        /// <summary>
+        /// Devuelve todos los meses
+        /// </summary>
+        /// <param name="filters">Filtrar por año</param>
+        /// <returns></returns>
         [HttpGet(Name = nameof(Get))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<MonthDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public IActionResult Get([FromQuery] MonthQueryFilter filters)
         {
             var months = _monthService.GetMonths(filters);
