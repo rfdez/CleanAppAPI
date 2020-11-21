@@ -11,10 +11,9 @@ namespace CleanApp.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Year> builder)
         {
-            builder.HasKey(e => e.Id)
-                    .HasName("PK_Year");
-
-            builder.Property(e => e.Id).ValueGeneratedNever();
+            builder.HasIndex(e => e.YearValue)
+                    .HasName("UC_YearValue")
+                    .IsUnique();
         }
     }
 }

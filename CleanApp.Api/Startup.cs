@@ -3,10 +3,13 @@ using CleanApp.Core.Interfaces;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Data;
 using CleanApp.Infrastructure.Filters;
+using CleanApp.Infrastructure.Options;
 using CleanApp.Infrastructure.Repositories;
+using CleanApp.Infrastructure.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,11 +40,14 @@ namespace CleanApp.Api
             .AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             })
             .ConfigureApiBehaviorOptions(options =>
             {
-                options.SuppressModelStateInvalidFilter = true;
+                //options.SuppressModelStateInvalidFilter = true;
             });
+
+            services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
 
             services.AddDbContext<CleanAppDDBBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CleanAppDDBB")));
 
@@ -51,12 +57,24 @@ namespace CleanApp.Api
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
             //Servicios
+
+            //Core
             services.AddTransient<ITenantService, TenantService>();
             services.AddTransient<IRoomService, RoomService>();
             services.AddTransient<IWeekService, WeekService>();
             services.AddTransient<IMonthService, MonthService>();
             services.AddTransient<IYearService, YearService>();
             services.AddTransient<IJobService, JobService>();
+            //Infrastructure
+            services.AddSingleton<IUriService>(provider =>
+            {
+                var accesor = provider.GetRequiredService<IHttpContextAccessor>();
+                var request = accesor.HttpContext.Request;
+                var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+
+                return new UriService(absoluteUri);
+            });
+
             //Repositorios
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

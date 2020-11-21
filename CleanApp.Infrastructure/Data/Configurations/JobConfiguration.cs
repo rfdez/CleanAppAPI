@@ -11,15 +11,10 @@ namespace CleanApp.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Job> builder)
         {
-            builder.HasKey(e => e.Id)
-                    .HasName("PK_Job");
-
-            builder.Property(e => e.Id).ValueGeneratedNever();
-
             builder.Property(e => e.JobDescription)
-                .IsRequired()
-                .HasMaxLength(255)
-                .IsUnicode(false);
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
             builder.Property(e => e.JobName)
                 .IsRequired()

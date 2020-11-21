@@ -14,8 +14,6 @@ namespace CleanApp.Infrastructure.Data.Configurations
             builder.HasKey(e => new { e.RoomId, e.WeekId })
                     .HasName("PK_RoomWeek");
 
-            builder.Property(e => e.CleanlinessDone).HasDefaultValueSql("((0))");
-
             builder.HasOne(d => d.Room)
                 .WithMany(p => p.Cleanlinesses)
                 .HasForeignKey(d => d.RoomId)
@@ -25,7 +23,6 @@ namespace CleanApp.Infrastructure.Data.Configurations
             builder.HasOne(d => d.Tenant)
                 .WithMany(p => p.Cleanlinesses)
                 .HasForeignKey(d => d.TenantId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TenantCleanliness");
 
             builder.HasOne(d => d.Week)

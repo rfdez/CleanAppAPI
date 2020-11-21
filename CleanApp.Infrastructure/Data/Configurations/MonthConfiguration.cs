@@ -11,16 +11,11 @@ namespace CleanApp.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Month> builder)
         {
-            builder.HasKey(e => e.Id)
-                    .HasName("PK_Month");
-
-            builder.Property(e => e.Id).ValueGeneratedNever();
-
             builder.HasOne(d => d.Year)
-                .WithMany(p => p.Months)
-                .HasForeignKey(d => d.YearId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_YearMonth");
+                    .WithMany(p => p.Months)
+                    .HasForeignKey(d => d.YearId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_YearMonth");
         }
     }
 }

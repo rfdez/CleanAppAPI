@@ -11,15 +11,10 @@ namespace CleanApp.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Tenant> builder)
         {
-            builder.HasKey(e => e.Id)
-                    .HasName("PK_Tenant");
-
-            builder.Property(e => e.Id).ValueGeneratedNever();
-
             builder.Property(e => e.TenantName)
-                .IsRequired()
-                .HasMaxLength(35)
-                .IsUnicode(false);
+                    .IsRequired()
+                    .HasMaxLength(35)
+                    .IsUnicode(false);
         }
     }
 }

@@ -1,25 +1,45 @@
 ﻿using CleanApp.Core.Entities;
 using CleanApp.Core.Exceptions;
 using CleanApp.Core.Interfaces;
-using System;
-using System.Collections.Generic;
+using CleanApp.Core.CustomEntities;
+using CleanApp.Core.QueryFilters;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using CleanApp.Infrastructure.Options;
+using Microsoft.Extensions.Options;
 
 namespace CleanApp.Core.Services
 {
     public class MonthService : IMonthService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public MonthService(IUnitOfWork unitOfWork)
+        private readonly PaginationOptions _paginationOptions;
+        public MonthService(IUnitOfWork unitOfWork, IOptions<PaginationOptions> options)
         {
             _unitOfWork = unitOfWork;
+            _paginationOptions = options.Value;
         }
 
-        public IEnumerable<Month> GetMonths()
+        public PagedList<Month> GetMonths(MonthQueryFilter filters)
         {
-            return _unitOfWork.MonthRepository.GetAll();
+            filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+
+            var months = _unitOfWork.MonthRepository.GetAll();
+
+            if (filters.YearId != null)
+            {
+                months = months.Where(m => m.YearId == filters.YearId).AsEnumerable();
+
+                if (filters.MonthValue != null)
+                {
+                    months = months.Where(m => m.MonthValue == filters.MonthValue).AsEnumerable();
+                }
+            }
+
+            var pagedMonths = PagedList<Month>.Create(months, filters.PageNumber, filters.PageSize);
+
+            return pagedMonths;
         }
 
         public async Task<Month> GetMonth(int id)
