@@ -9,11 +9,13 @@ using CleanApp.Core.Entities;
 using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace CleanApp.Api.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
