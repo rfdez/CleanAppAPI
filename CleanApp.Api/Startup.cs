@@ -135,8 +135,7 @@ namespace CleanApp.Api
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("swagger/v1/swagger.json", "Clean App API v1");
-                options.RoutePrefix = string.Empty;
+                options.SwaggerEndpoint("../swagger/v1/swagger.json", "Clean App API v1");
             });
             app.UseRouting();
             app.UseAuthentication();

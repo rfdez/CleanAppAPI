@@ -30,7 +30,7 @@
     "Local IIS": {
       "commandName": "IIS",
       "launchBrowser": true,
-      "launchUrl": "https://localhost/CAApi/index.html",
+      "launchUrl": "https://localhost/CAApi/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
