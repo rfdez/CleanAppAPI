@@ -1,25 +1,15 @@
 using AutoMapper;
-using CleanApp.Core.Interfaces;
-using CleanApp.Core.Services;
-using CleanApp.Infrastructure.Data;
 using CleanApp.Infrastructure.Filters;
-using CleanApp.Infrastructure.Interfaces;
-using CleanApp.Infrastructure.Options;
-using CleanApp.Infrastructure.Repositories;
-using CleanApp.Infrastructure.Services;
+using CleanApp.Infrastructure.Extensions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System;
-using System.IO;
 using System.Reflection;
 using System.Text;
 
@@ -54,49 +44,10 @@ namespace CleanApp.Api
                 //options.SuppressModelStateInvalidFilter = true;
             });
 
-            services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
-            services.Configure<PasswordOptions>(Configuration.GetSection("PasswordOptions"));
-
-            services.AddDbContext<CleanAppDDBBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CleanAppDDBB")));
-
-            //Dependencias
-
-            //Repositorio base
-            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-
-            //Servicios
-
-            //Core
-            services.AddTransient<ITenantService, TenantService>();
-            services.AddTransient<IRoomService, RoomService>();
-            services.AddTransient<IWeekService, WeekService>();
-            services.AddTransient<IMonthService, MonthService>();
-            services.AddTransient<IYearService, YearService>();
-            services.AddTransient<IJobService, JobService>();
-            services.AddTransient<IAuthenticationService, AuthenticationService>();
-            //Infrastructure
-            services.AddSingleton<IPassworService, PasswordService>();
-            services.AddSingleton<IUriService>(provider =>
-            {
-                var accesor = provider.GetRequiredService<IHttpContextAccessor>();
-                var request = accesor.HttpContext.Request;
-                var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
-
-                return new UriService(absoluteUri);
-            });
-
-            //Repositorios
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-
-            services.AddSwaggerGen(doc =>
-            {
-                doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Cleap App API", Version = "v1" });
-
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-
-                doc.IncludeXmlComments(xmlPath);
-            });
+            services.AddConfigurations(Configuration);
+            services.AddDbContexts(Configuration);
+            services.AddServices();
+            services.AddSwagger($"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
 
             services.AddAuthentication(options =>
             {

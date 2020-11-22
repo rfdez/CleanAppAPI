@@ -36,6 +36,7 @@ namespace CleanApp.Core.Services
             }
 
             await _unitOfWork.YearRepository.Add(year);
+            await _unitOfWork.SaveChangesAsync();
 
             return true;
         }
@@ -50,6 +51,7 @@ namespace CleanApp.Core.Services
         public async Task<bool> DeleteYear(int id)
         {
             await _unitOfWork.YearRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
 
             return true;
         }
