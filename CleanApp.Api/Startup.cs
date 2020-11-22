@@ -3,6 +3,7 @@ using CleanApp.Core.Interfaces;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Data;
 using CleanApp.Infrastructure.Filters;
+using CleanApp.Infrastructure.Interfaces;
 using CleanApp.Infrastructure.Options;
 using CleanApp.Infrastructure.Repositories;
 using CleanApp.Infrastructure.Services;
@@ -15,7 +16,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
@@ -55,6 +55,7 @@ namespace CleanApp.Api
             });
 
             services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
+            services.Configure<PasswordOptions>(Configuration.GetSection("PasswordOptions"));
 
             services.AddDbContext<CleanAppDDBBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CleanAppDDBB")));
 
@@ -72,7 +73,9 @@ namespace CleanApp.Api
             services.AddTransient<IMonthService, MonthService>();
             services.AddTransient<IYearService, YearService>();
             services.AddTransient<IJobService, JobService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
             //Infrastructure
+            services.AddSingleton<IPassworService, PasswordService>();
             services.AddSingleton<IUriService>(provider =>
             {
                 var accesor = provider.GetRequiredService<IHttpContextAccessor>();
@@ -135,7 +138,7 @@ namespace CleanApp.Api
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("../swagger/v1/swagger.json", "Clean App API v1");
+                options.SwaggerEndpoint("v1/swagger.json", "Clean App API v1");
             });
             app.UseRouting();
             app.UseAuthentication();

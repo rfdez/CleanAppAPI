@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
+using CleanApp.Core.Entities.Auth;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,20 +12,14 @@ namespace CleanApp.Infrastructure.Mappings
     {
         public AutomapperProfile()
         {
-            CreateMap<Year, YearDto>();
-            CreateMap<YearDto, Year>();
-            CreateMap<Cleanliness, CleanlinessDto>();
-            CreateMap<CleanlinessDto, Cleanliness>();
-            CreateMap<Job, JobDto>();
-            CreateMap<JobDto, Job>();
-            CreateMap<Month, MonthDto>();
-            CreateMap<MonthDto, Month>();
-            CreateMap<Room, RoomDto>();
-            CreateMap<RoomDto, Room>();
-            CreateMap<Tenant, TenantDto>();
-            CreateMap<TenantDto, Tenant>();
-            CreateMap<Week, WeekDto>();
-            CreateMap<WeekDto, Week>();
+            CreateMap<Year, YearDto>().ReverseMap();
+            CreateMap<Cleanliness, CleanlinessDto>().ReverseMap();
+            CreateMap<Job, JobDto>().ReverseMap();
+            CreateMap<Month, MonthDto>().ReverseMap();
+            CreateMap<Room, RoomDto>().ReverseMap();
+            CreateMap<Tenant, TenantDto>().ReverseMap();
+            CreateMap<Week, WeekDto>().ReverseMap();
+            CreateMap<AuthenticationDto, Authentication>().ReverseMap();
         }
     }
 }

@@ -1,8 +1,7 @@
-﻿using System;
+﻿using System.Reflection;
 using CleanApp.Core.Entities;
-using CleanApp.Infrastructure.Data.Configurations;
+using CleanApp.Core.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CleanApp.Infrastructure.Data
 {
@@ -24,22 +23,11 @@ namespace CleanApp.Infrastructure.Data
         public virtual DbSet<Tenant> Tenants { get; set; }
         public virtual DbSet<Week> Weeks { get; set; }
         public virtual DbSet<Year> Years { get; set; }
+        public virtual DbSet<Authentication> Authentications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new CleanlinessConfiguration());
-
-            modelBuilder.ApplyConfiguration(new JobConfiguration());
-
-            modelBuilder.ApplyConfiguration(new MonthConfiguration());
-
-            modelBuilder.ApplyConfiguration(new RoomConfiguration());
-
-            modelBuilder.ApplyConfiguration(new TenantConfiguration());
-
-            modelBuilder.ApplyConfiguration(new WeekConfiguration());
-
-            modelBuilder.ApplyConfiguration(new YearConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

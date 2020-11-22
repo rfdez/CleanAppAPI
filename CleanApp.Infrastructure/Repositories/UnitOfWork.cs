@@ -1,6 +1,7 @@
 ﻿using CleanApp.Core.Entities;
 using CleanApp.Core.Interfaces;
 using CleanApp.Infrastructure.Data;
+using CleanApp.Infrastructure.Repositories.Auth;
 using System;
 using System.Threading.Tasks;
 
@@ -9,7 +10,6 @@ namespace CleanApp.Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly CleanAppDDBBContext _context;
-
         public UnitOfWork(CleanAppDDBBContext context)
         {
             _context = context;
@@ -26,6 +26,9 @@ namespace CleanApp.Infrastructure.Repositories
         public IRoomRepository RoomRepository => new RoomRepository(_context);
 
         public IJobRepository JobRepository => new JobRepository(_context);
+
+        public IAuthenticationRepository AuthenticationRepository => new AuthenticationRepository(_context);
+
 
         public void Dispose()
         {

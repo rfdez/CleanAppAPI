@@ -1,4 +1,5 @@
 ﻿using CleanApp.Core.Entities;
+using CleanApp.Infrastructure.Repositories.Auth;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,6 +20,8 @@ namespace CleanApp.Core.Interfaces
         IRoomRepository RoomRepository { get; }
 
         IJobRepository JobRepository { get; }
+
+        IAuthenticationRepository AuthenticationRepository { get; }
 
         void SaveChanges();
 
