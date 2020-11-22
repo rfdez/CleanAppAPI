@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using CleanApp.Api.Responses;
 using CleanApp.Core.Entities;
 using CleanApp.Core.Entities.Auth;
 using CleanApp.Core.Services;
@@ -45,8 +46,9 @@ namespace CleanApp.Api.Controllers
                     Token = token
                 });
             }
+            var response = new ApiResponse<string>("No se ha podido validar el usuario");
 
-            return NotFound();
+            return NotFound(response);
         }
 
         #region Private methods
@@ -54,6 +56,12 @@ namespace CleanApp.Api.Controllers
         private async Task<(bool, Authentication)> IsValidUser(UserLogin login)
         {
             var user = await _authenticationService.GetLoginByCredentials(login);
+
+            if (user == null)
+            {
+                return (false, user);
+            }
+
             var isValid = _passwordService.Check(user.UserPassword, login.Password);
 
             return (isValid, user);
