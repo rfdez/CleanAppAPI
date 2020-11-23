@@ -1,4 +1,5 @@
 ﻿using CleanApp.Core.Entities;
+using CleanApp.Core.Exceptions;
 using CleanApp.Core.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,12 +16,12 @@ namespace CleanApp.Core.Services
 
         public IEnumerable<Year> GetYears()
         {
-            return _unitOfWork.YearRepository.GetAll();
+            return _unitOfWork.YearRepository.GetAll() ?? throw new BusinessException("No existen años en nuestros datos.");
         }
 
         public async Task<Year> GetYear(int id)
         {
-            return await _unitOfWork.YearRepository.GetById(id);
+            return await _unitOfWork.YearRepository.GetById(id) ?? throw new BusinessException("No existe el año solicitado.");
         }
 
         public async Task<bool> InsertYear(Year year)
@@ -43,8 +44,18 @@ namespace CleanApp.Core.Services
 
         public async Task<bool> UpdateYearAsync(Year year)
         {
+            var exsist = await _unitOfWork.YearRepository.GetById(year.Id);
+
+            if (exsist == null)
+            {
+                throw new BusinessException("No existe el año solicitado.");
+            }
+
+            exsist.YearValue = year.YearValue;
             _unitOfWork.YearRepository.Update(year);
+
             await _unitOfWork.SaveChangesAsync();
+            
             return true;
         }
 

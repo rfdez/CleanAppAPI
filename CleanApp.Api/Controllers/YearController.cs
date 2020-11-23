@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanApp.Api.Responses;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
-using CleanApp.Core.Interfaces;
 using CleanApp.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanApp.Api.Controllers
 {
+    //[Authorize]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class YearController : ControllerBase
@@ -23,7 +25,14 @@ namespace CleanApp.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Devuelve todos los años
+        /// </summary>
+        /// <returns>Lista de años</returns>
+        [HttpGet(Name = nameof(Get) + "[controller]" + "s")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<YearDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public IActionResult Get()
         {
             var years = _yearService.GetYears();
@@ -34,7 +43,14 @@ namespace CleanApp.Api.Controllers
             return Ok(response);
         }
         
-        [HttpGet("{id}")]
+        /// <summary>
+        /// Obtiene el año solicitado
+        /// </summary>
+        /// <param name="id">Id del año</param>
+        /// <returns>El año solicitado</returns>
+        [HttpGet("{id}", Name = nameof(Get) + "[controller]")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<YearDto>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<System.Exception>))]
         public async Task<IActionResult> Get(int id)
         {
             var year = await _yearService.GetYear(id);
@@ -45,7 +61,14 @@ namespace CleanApp.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Inserta un nuevo año
+        /// </summary>
+        /// <param name="yearDto">Valor del año</param>
+        /// <returns>El año insertado</returns>
+        [HttpPost(Name = nameof(Post) + "[controller]")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<YearDto>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<string>))]
         public async Task<IActionResult> Post(YearDto yearDto)
         {
             var year = _mapper.Map<Year>(yearDto);
@@ -63,7 +86,15 @@ namespace CleanApp.Api.Controllers
             return BadRequest(response);
         }
 
-        [HttpPut("{id}")]
+        /// <summary>
+        /// Edita el año solicitado
+        /// </summary>
+        /// <param name="id">Id del año</param>
+        /// <param name="yearDto">Nuevos datos del año</param>
+        /// <returns>Año actualizado</returns>
+        [HttpPut("{id}", Name = nameof(Put) + "[controller]")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<YearDto>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<string>))]
         public async Task<IActionResult> Put(int id, YearDto yearDto)
         {
             var year = _mapper.Map<Year>(yearDto);
@@ -81,8 +112,15 @@ namespace CleanApp.Api.Controllers
 
             return BadRequest(response);
         }
-        
-        [HttpDelete("{id}")]
+
+        /// <summary>
+        /// Elimina el año solicitado
+        /// </summary>
+        /// <param name="id">Id del año</param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = nameof(Delete) + "[controller]")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<string>))]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _yearService.DeleteYear(id);

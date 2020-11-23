@@ -37,7 +37,7 @@ namespace CleanApp.Api.Controllers
         /// </summary>
         /// <param name="filters">Filtrar por año</param>
         /// <returns></returns>
-        [HttpGet(Name = nameof(Get))]
+        [HttpGet(Name = nameof(Get) + "[controller]")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<MonthDto>>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
