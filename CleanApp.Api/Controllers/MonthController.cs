@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanApp.Api.Responses;
@@ -12,11 +13,13 @@ using CleanApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace CleanApp.Api.Controllers
 {
-    [Authorize]
-    [Produces("application/json")]
+    //[Authorize]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
     [ApiController]
     public class MonthController : ControllerBase
@@ -37,11 +40,10 @@ namespace CleanApp.Api.Controllers
         /// </summary>
         /// <param name="filters">Filtrar por año</param>
         /// <returns></returns>
-        [HttpGet(Name = nameof(Get) + "[controller]")]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<MonthDto>>))]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public IActionResult Get([FromQuery] MonthQueryFilter filters)
+        [HttpGet(Name = nameof(GetMonths))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<MonthDto>>), StatusCodes.Status200OK)]
+        public IActionResult GetMonths([FromQuery] MonthQueryFilter filters)
         {
             var months = _monthService.GetMonths(filters);
             var monthsDto = _mapper.Map<IEnumerable<MonthDto>>(months);
@@ -54,22 +56,28 @@ namespace CleanApp.Api.Controllers
                 TotalPages = months.TotalPages,
                 HasNextPage = months.HasNextPage,
                 HasPreviousPage = months.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetMonthPaginationUri(filters, Url.RouteUrl(nameof(Get))).ToString(),
-                PreviousPageUrl = _uriSerice.GetMonthPaginationUri(filters, Url.RouteUrl(nameof(Get))).ToString()
+                NextPageUrl = _uriSerice.GetMonthPaginationUri(filters, Url.RouteUrl(nameof(GetMonths))).ToString(),
+                PreviousPageUrl = _uriSerice.GetMonthPaginationUri(filters, Url.RouteUrl(nameof(GetMonths))).ToString()
 
             };
+
             var response = new ApiResponse<IEnumerable<MonthDto>>(monthsDto)
             {
                 Meta = metadata
             };
 
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        /// <summary>
+        /// Devuelve el mes solicitado
+        /// </summary>
+        /// <param name="id">Id del mes</param>
+        /// <returns>Mes</returns>
+        [HttpGet("{id}", Name = nameof(GetMonth))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMonth(int id)
         {
             var month = await _monthService.GetMonth(id);
             var monthDto = _mapper.Map<MonthDto>(month);
@@ -79,56 +87,44 @@ namespace CleanApp.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post(MonthDto monthDto)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="monthDto"></param>
+        /// <returns></returns>
+        [HttpPost(Name = nameof(InsertMonth))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> InsertMonth(MonthDto monthDto)
         {
             var month = _mapper.Map<Month>(monthDto);
-            var inserted = await _monthService.InsertMonth(month);
+            await _monthService.InsertMonth(month);
             monthDto = _mapper.Map<MonthDto>(month);
 
-            var response = new ApiResponse<string>("Ningún registro insertado.");
-
-            if (inserted)
-            {
-                return Created($"{monthDto.YearId}", new ApiResponse<MonthDto>(monthDto));
-
-            }
-
-            return BadRequest(response);
+            return CreatedAtAction(nameof(GetMonth), new { id = monthDto.Id }, new ApiResponse<MonthDto>(monthDto));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, MonthDto monthDto)
+        [HttpPut("{id}", Name = nameof(UpdateMonthAsync))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateMonthAsync(int id, MonthDto monthDto)
         {
             var month = _mapper.Map<Month>(monthDto);
             month.YearId = id;
 
-            var updated = await _monthService.UpdateMonthAsync(month);
-            monthDto = _mapper.Map<MonthDto>(month);
+            await _monthService.UpdateMonthAsync(month);
 
-            var response = new ApiResponse<string>("Ningún registro actualizado.");
-
-            if (updated)
-            {
-                return Ok(new ApiResponse<MonthDto>(monthDto));
-            }
-
-            return BadRequest(response);
+            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}", Name = nameof(DeleteMonth))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteMonth(int id)
         {
-            var deleted = await _monthService.DeleteMonth(id);
+            await _monthService.DeleteMonth(id);
 
-            var response = new ApiResponse<string>("Ningún registro eliminado.");
-
-            if (deleted)
-            {
-                return NoContent();
-            }
-
-            return BadRequest(response);
+            return NoContent();
         }
     }
 }

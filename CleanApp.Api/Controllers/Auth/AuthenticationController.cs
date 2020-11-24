@@ -11,10 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace CleanApp.Api.Controllers
 {
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [Authorize(Roles = nameof(RoleType.Administrator))]
     [Route("api/[controller]")]
     [ApiController]

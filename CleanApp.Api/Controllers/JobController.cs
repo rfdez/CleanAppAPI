@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanApp.Api.Responses;
@@ -12,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CleanApp.Api.Controllers
 {
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
     [ApiController]
     public class JobController : ControllerBase

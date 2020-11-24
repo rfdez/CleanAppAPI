@@ -44,10 +44,10 @@ namespace CleanApp.Core.Services
 
         public async Task<Month> GetMonth(int id)
         {
-            return await _unitOfWork.MonthRepository.GetById(id);
+            return await _unitOfWork.MonthRepository.GetById(id) ?? throw new BusinessException();
         }
 
-        public async Task<bool> InsertMonth(Month month)
+        public async Task InsertMonth(Month month)
         {
             var months = await _unitOfWork.MonthRepository.GetMonthsByYear(month.YearId);
 
@@ -60,21 +60,17 @@ namespace CleanApp.Core.Services
 
             await _unitOfWork.MonthRepository.Add(month);
             await _unitOfWork.SaveChangesAsync();
-
-            return true;
         }
 
-        public async Task<bool> UpdateMonthAsync(Month month)
+        public async Task UpdateMonthAsync(Month month)
         {
             _unitOfWork.MonthRepository.Update(month);
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<bool> DeleteMonth(int id)
+        public async Task DeleteMonth(int id)
         {
             await _unitOfWork.MonthRepository.Delete(id);
-            return true;
         }
     }
 }

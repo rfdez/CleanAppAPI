@@ -11,6 +11,8 @@ namespace CleanApp.Infrastructure.Filters
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            var response = new ValidationProblemDetails();
+
             if (!context.ModelState.IsValid)
             {
                 context.Result = new BadRequestObjectResult(context.ModelState);

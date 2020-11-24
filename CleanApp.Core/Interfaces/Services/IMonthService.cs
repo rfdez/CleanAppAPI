@@ -8,10 +8,10 @@ namespace CleanApp.Core.Services
 {
     public interface IMonthService
     {
-        Task<bool> DeleteMonth(int id);
+        Task DeleteMonth(int id);
         Task<Month> GetMonth(int id);
         PagedList<Month> GetMonths(MonthQueryFilter filters);
-        Task<bool> InsertMonth(Month month);
-        Task<bool> UpdateMonthAsync(Month month);
+        Task InsertMonth(Month month);
+        Task UpdateMonthAsync(Month month);
     }
 }

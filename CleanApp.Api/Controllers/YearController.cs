@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanApp.Api.Responses;
@@ -11,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace CleanApp.Api.Controllers
 {
     //[Authorize]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
     [ApiController]
     public class YearController : ControllerBase
@@ -29,11 +31,10 @@ namespace CleanApp.Api.Controllers
         /// Devuelve todos los años
         /// </summary>
         /// <returns>Lista de años</returns>
-        [HttpGet(Name = nameof(Get) + "[controller]" + "s")]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<YearDto>>))]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public IActionResult Get()
+        [HttpGet(Name = nameof(GetYears))]
+
+        [ProducesDefaultResponseType]
+        public IActionResult GetYears()
         {
             var years = _yearService.GetYears();
             var yearsDto = _mapper.Map<IEnumerable<YearDto>>(years);
