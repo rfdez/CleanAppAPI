@@ -8,9 +8,6 @@ using CleanApp.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
@@ -44,7 +41,7 @@ namespace CleanApp.Api.Controllers
         [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> RegisterUser(AuthenticationDto authenticationDto)
         {
-            // a la hora de crear una authenticacion tambien se crearia un tenant
+            // a la hora de crear una authenticacion tambien se crearia y devolveria un tenant
             var user = _mapper.Map<Authentication>(authenticationDto);
             user.UserPassword = _passwordService.Hash(user.UserPassword);
 

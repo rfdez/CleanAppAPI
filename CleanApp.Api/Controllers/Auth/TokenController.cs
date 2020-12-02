@@ -39,17 +39,14 @@ namespace CleanApp.Api.Controllers
         /// <returns>Token</returns>
         [HttpPost(Name = nameof(GenerateToken))]
         [ProducesDefaultResponseType]
-        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<Token>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GenerateToken(UserLogin login)
         {
             var userValid = await ValidateUser(login);
 
             var token = GenerateToken(userValid);
 
-            var response = new ApiResponse<object>(new
-            {
-                Token = token
-            });
+            var response = new ApiResponse<Token>(token);
 
             return Ok(response);
         }
@@ -65,7 +62,7 @@ namespace CleanApp.Api.Controllers
             return user;
         }
 
-        private string GenerateToken(Authentication authentication)
+        private Token GenerateToken(Authentication authentication)
         {
             //Header
             var _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"]));
@@ -87,12 +84,18 @@ namespace CleanApp.Api.Controllers
                     _configuration["Authentication:Audience"],
                     claims,
                     DateTime.Now,
-                    DateTime.Now.AddMinutes(_configuration.GetValue<double>("TokenLife"))
+                    DateTime.Now.AddMinutes(_configuration.GetValue<double>("Authentication:TokenLife"))
                 );
 
-            var token = new JwtSecurityToken(header, payload);
+            var jwtToken = new JwtSecurityToken(header, payload);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            Token token = new Token() {
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken),
+                CreatedIn = jwtToken.ValidFrom.ToString(),
+                ExpiresIn = jwtToken.ValidTo.ToString()
+            };
+
+            return token;
         }
 
         #endregion
