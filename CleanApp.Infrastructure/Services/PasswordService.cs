@@ -1,11 +1,10 @@
-﻿using CleanApp.Infrastructure.Interfaces;
+﻿using CleanApp.Core.Exceptions;
+using CleanApp.Infrastructure.Interfaces;
 using CleanApp.Infrastructure.Options;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace CleanApp.Infrastructure.Services
 {
@@ -17,7 +16,7 @@ namespace CleanApp.Infrastructure.Services
             _options = options.Value;
         }
 
-        public bool Check(string hash, string password)
+        public void Check(string hash, string password)
         {
             var parts = hash.Split('.');
 
@@ -39,7 +38,10 @@ namespace CleanApp.Infrastructure.Services
             {
                 var keyToCheck = algorithm.GetBytes(_options.KeySize);
 
-                return keyToCheck.SequenceEqual(key);
+                if (!keyToCheck.SequenceEqual(key))
+                {
+                    throw new BusinessException("La contraseña es incorrecta.");
+                }
             }
         }
 

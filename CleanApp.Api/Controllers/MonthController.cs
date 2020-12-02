@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,9 +9,7 @@ using CleanApp.Core.Entities;
 using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 
 namespace CleanApp.Api.Controllers
@@ -39,7 +36,7 @@ namespace CleanApp.Api.Controllers
         /// Devuelve todos los meses
         /// </summary>
         /// <param name="filters">Filtrar por año</param>
-        /// <returns></returns>
+        /// <returns>Lista de meses</returns>
         [HttpGet(Name = nameof(GetMonths))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<MonthDto>>), StatusCodes.Status200OK)]
@@ -72,8 +69,8 @@ namespace CleanApp.Api.Controllers
         /// <summary>
         /// Devuelve el mes solicitado
         /// </summary>
-        /// <param name="id">Id del mes</param>
-        /// <returns>Mes</returns>
+        /// <param name="id">Identificador del mes</param>
+        /// <returns>Un mes</returns>
         [HttpGet("{id}", Name = nameof(GetMonth))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status200OK)]
@@ -88,10 +85,10 @@ namespace CleanApp.Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Inserta un mes a un año
         /// </summary>
-        /// <param name="monthDto"></param>
-        /// <returns></returns>
+        /// <param name="monthDto">Mes a insertar</param>
+        /// <returns>Mes insertado</returns>
         [HttpPost(Name = nameof(InsertMonth))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status201Created)]
@@ -104,19 +101,30 @@ namespace CleanApp.Api.Controllers
             return CreatedAtAction(nameof(GetMonth), new { id = monthDto.Id }, new ApiResponse<MonthDto>(monthDto));
         }
 
+        /// <summary>
+        /// Actualiza el mes de un año
+        /// </summary>
+        /// <param name="id">Identificador del mes</param>
+        /// <param name="monthDto">Nuevo valor del mes</param>
+        /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateMonthAsync))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateMonthAsync(int id, MonthDto monthDto)
         {
             var month = _mapper.Map<Month>(monthDto);
-            month.YearId = id;
+            month.Id = id;
 
             await _monthService.UpdateMonthAsync(month);
 
             return NoContent();
         }
 
+        /// <summary>
+        /// Borra el mes de un año
+        /// </summary>
+        /// <param name="id">Identificador del mes</param>
+        /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteMonth))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

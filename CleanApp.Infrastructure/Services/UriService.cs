@@ -11,7 +11,7 @@ namespace CleanApp.Infrastructure.Services
             _baseUri = baseUri;
         }
 
-        public Uri GetMonthPaginationUri(MonthQueryFilter filter, string actionUrl)
+        public Uri GetMonthPaginationUri(MonthQueryFilter filters, string actionUrl)
         {
             string uri = $"{_baseUri}{actionUrl}";
 

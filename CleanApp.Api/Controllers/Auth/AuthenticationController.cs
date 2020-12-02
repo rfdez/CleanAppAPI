@@ -39,8 +39,10 @@ namespace CleanApp.Api.Controllers
         /// </summary>
         /// <param name="authenticationDto">Datos del usuario</param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> Post(AuthenticationDto authenticationDto)
+        [HttpPost(Name = nameof(RegisterUser))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> RegisterUser(AuthenticationDto authenticationDto)
         {
             // a la hora de crear una authenticacion tambien se crearia un tenant
             var user = _mapper.Map<Authentication>(authenticationDto);
@@ -49,9 +51,10 @@ namespace CleanApp.Api.Controllers
             await _authenticationService.RegisterUser(user);
 
             authenticationDto = _mapper.Map<AuthenticationDto>(user);
+
             var response = new ApiResponse<AuthenticationDto>(authenticationDto);
 
-            return Ok(response);
+            return Created(authenticationDto.CurrentUser, response);
         }
     }
 }

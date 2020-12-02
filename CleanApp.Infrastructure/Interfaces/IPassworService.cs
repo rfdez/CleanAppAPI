@@ -4,6 +4,6 @@
     {
         string Hash(string password);
 
-        bool Check(string hash, string password);
+        void Check(string hash, string password);
     }
 }

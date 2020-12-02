@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CleanApp.Infrastructure.Filters
@@ -11,11 +9,15 @@ namespace CleanApp.Infrastructure.Filters
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var response = new ValidationProblemDetails();
+            var response = new ValidationProblemDetails(modelState: context.ModelState)
+            {
+                Type = HttpStatusCode.BadRequest.ToString(),
+                Status = (int)HttpStatusCode.BadRequest
+            };
 
             if (!context.ModelState.IsValid)
             {
-                context.Result = new BadRequestObjectResult(context.ModelState);
+                context.Result = new BadRequestObjectResult(response);
                 return;
             }
 

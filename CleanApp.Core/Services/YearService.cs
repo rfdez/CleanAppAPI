@@ -1,7 +1,9 @@
 ﻿using CleanApp.Core.Entities;
 using CleanApp.Core.Exceptions;
 using CleanApp.Core.Interfaces;
+using CleanApp.Core.QueryFilters;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services
@@ -14,9 +16,15 @@ namespace CleanApp.Core.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<Year> GetYears()
+        public IEnumerable<Year> GetYears(YearQueryFilter filters)
         {
-            return _unitOfWork.YearRepository.GetAll() ?? throw new BusinessException("No existen años en nuestros datos.");
+            if (filters.YearValue != null)
+            {
+                var years = _unitOfWork.YearRepository.GetAll();
+                return years.Where(y => y.YearValue == filters.YearValue).Count() > 0 ? years.Where(y => y.YearValue == filters.YearValue) : throw new BusinessException("No existe el año con el valor indicado.");
+            }
+
+            return _unitOfWork.YearRepository.GetAll().Count() > 0 ? _unitOfWork.YearRepository.GetAll() : throw new BusinessException("No existen años en nuestros datos.");
         }
 
         public async Task<Year> GetYear(int id)
@@ -24,7 +32,7 @@ namespace CleanApp.Core.Services
             return await _unitOfWork.YearRepository.GetById(id) ?? throw new BusinessException("No existe el año solicitado.");
         }
 
-        public async Task<bool> InsertYear(Year year)
+        public async Task InsertYear(Year year)
         {
             var years = _unitOfWork.YearRepository.GetAll();
 
@@ -32,39 +40,49 @@ namespace CleanApp.Core.Services
             {
                 if (item.YearValue == year.YearValue)
                 {
-                    return false;
+                    throw new BusinessException("No es posible repetir un año.");
                 }
             }
 
             await _unitOfWork.YearRepository.Add(year);
             await _unitOfWork.SaveChangesAsync();
-
-            return true;
         }
 
-        public async Task<bool> UpdateYearAsync(Year year)
+        public async Task UpdateYearAsync(Year year)
         {
-            var exsist = await _unitOfWork.YearRepository.GetById(year.Id);
+            var exsists = _unitOfWork.YearRepository.GetAll().Where(y => y.Id == year.Id).AsEnumerable();
 
-            if (exsist == null)
+            if (exsists.Count() < 1)
             {
                 throw new BusinessException("No existe el año solicitado.");
             }
 
-            exsist.YearValue = year.YearValue;
+            var duplicated = _unitOfWork.YearRepository.GetAll().Except(exsists).Where(y => y.YearValue == year.YearValue);
+
+            if (duplicated.Count() > 0)
+            {
+                throw new BusinessException("No puedes duplicar un año.");
+            }
+
+            var currentYear = exsists.First();
+
+            currentYear.YearValue = year.YearValue;
             _unitOfWork.YearRepository.Update(year);
 
             await _unitOfWork.SaveChangesAsync();
-            
-            return true;
         }
 
-        public async Task<bool> DeleteYear(int id)
+        public async Task DeleteYear(int id)
         {
+            var exists = await _unitOfWork.YearRepository.GetById(id);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe el año que desea borrar.");
+            }
+
             await _unitOfWork.YearRepository.Delete(id);
             await _unitOfWork.SaveChangesAsync();
-
-            return true;
         }
     }
 }

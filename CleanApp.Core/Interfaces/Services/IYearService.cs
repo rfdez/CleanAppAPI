@@ -1,4 +1,5 @@
 ﻿using CleanApp.Core.Entities;
+using CleanApp.Core.QueryFilters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,14 +7,14 @@ namespace CleanApp.Core.Services
 {
     public interface IYearService
     {
-        IEnumerable<Year> GetYears();
+        IEnumerable<Year> GetYears(YearQueryFilter filters);
 
         Task<Year> GetYear(int id);
 
-        Task<bool> InsertYear(Year year);
+        Task InsertYear(Year year);
 
-        Task<bool> UpdateYearAsync(Year year);
+        Task UpdateYearAsync(Year year);
 
-        Task<bool> DeleteYear(int id);
+        Task DeleteYear(int id);
     }
 }

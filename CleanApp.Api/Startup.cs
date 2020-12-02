@@ -41,7 +41,7 @@ namespace CleanApp.Api
             })
             .ConfigureApiBehaviorOptions(options =>
             {
-                //options.SuppressModelStateInvalidFilter = true;
+                options.SuppressModelStateInvalidFilter = true;
             });
 
             services.AddConfigurations(Configuration);

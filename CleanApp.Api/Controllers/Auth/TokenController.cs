@@ -9,6 +9,7 @@ using CleanApp.Core.Entities;
 using CleanApp.Core.Entities.Auth;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -32,42 +33,36 @@ namespace CleanApp.Api.Controllers
         }
 
         /// <summary>
-        /// Función para obtener un token mediante credenciales
+        /// Obtener un token mediante credenciales
         /// </summary>
         /// <param name="login">Usuario y contraseña</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> Post(UserLogin login)
+        /// <returns>Token</returns>
+        [HttpPost(Name = nameof(GenerateToken))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GenerateToken(UserLogin login)
         {
-            var validation = await IsValidUser(login);
+            var userValid = await ValidateUser(login);
 
-            if (validation.Item1)
+            var token = GenerateToken(userValid);
+
+            var response = new ApiResponse<object>(new
             {
-                var token = GenerateToken(validation.Item2);
-                return Ok(new
-                {
-                    Token = token
-                });
-            }
-            var response = new ApiResponse<string>("No se ha podido validar el usuario");
+                Token = token
+            });
 
-            return NotFound(response);
+            return Ok(response);
         }
 
         #region Private methods
 
-        private async Task<(bool, Authentication)> IsValidUser(UserLogin login)
+        private async Task<Authentication> ValidateUser(UserLogin login)
         {
             var user = await _authenticationService.GetLoginByCredentials(login);
 
-            if (user == null)
-            {
-                return (false, user);
-            }
+            _passwordService.Check(user.UserPassword, login.Password);
 
-            var isValid = _passwordService.Check(user.UserPassword, login.Password);
-
-            return (isValid, user);
+            return user;
         }
 
         private string GenerateToken(Authentication authentication)
