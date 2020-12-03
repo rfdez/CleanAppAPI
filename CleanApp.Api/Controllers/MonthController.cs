@@ -33,7 +33,7 @@ namespace CleanApp.Api.Controllers
         }
 
         /// <summary>
-        /// Devuelve todos los meses
+        /// Obtiene todos los meses
         /// </summary>
         /// <param name="filters">Filtrar por año</param>
         /// <returns>Lista de meses</returns>

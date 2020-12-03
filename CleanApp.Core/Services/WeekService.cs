@@ -1,6 +1,11 @@
-﻿using CleanApp.Core.Entities;
+﻿using CleanApp.Core.CustomEntities;
+using CleanApp.Core.Entities;
 using CleanApp.Core.Interfaces;
+using CleanApp.Core.QueryFilters;
+using CleanApp.Infrastructure.Options;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services
@@ -8,14 +13,33 @@ namespace CleanApp.Core.Services
     public class WeekService : IWeekService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public WeekService(IUnitOfWork unitOfWork)
+        private readonly PaginationOptions _paginationOptions;
+        public WeekService(IUnitOfWork unitOfWork, IOptions<PaginationOptions> options)
         {
             _unitOfWork = unitOfWork;
+            _paginationOptions = options.Value;
         }
 
-        public IEnumerable<Week> GetWeeks()
+        public PagedList<Week> GetWeeks(WeekQueryFilter filters)
         {
-            return _unitOfWork.WeekRepository.GetAll();
+            filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
+            filters.PageSize = filters.PageSize == 0 ? 4 : filters.PageSize;
+
+            var weeks = _unitOfWork.WeekRepository.GetAll();
+
+            if (filters.MonthId != null)
+            {
+                weeks = weeks.Where(w => w.MonthId == filters.MonthId).AsEnumerable();
+
+                if (filters.WeekValue != null)
+                {
+                    weeks = weeks.Where(w => w.WeekValue == filters.WeekValue).AsEnumerable();
+                }
+            }
+
+            var pagedWeeks = PagedList<Week>.Create(weeks, filters.PageNumber, filters.PageSize);
+
+            return pagedWeeks;
         }
 
         public async Task<Week> GetWeek(int id)

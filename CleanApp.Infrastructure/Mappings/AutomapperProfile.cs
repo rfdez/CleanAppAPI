@@ -2,9 +2,6 @@
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
 using CleanApp.Core.Entities.Auth;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CleanApp.Infrastructure.Mappings
 {

@@ -2,10 +2,8 @@
 using CleanApp.Api.Responses;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities.Auth;
-using CleanApp.Core.Enumerations;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
@@ -15,7 +13,7 @@ namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Authorize(Roles = nameof(RoleType.Administrator))]
+    //[Authorize(Roles = nameof(RoleType.Administrator))]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase

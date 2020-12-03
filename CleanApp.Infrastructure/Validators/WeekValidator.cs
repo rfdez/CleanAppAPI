@@ -1,20 +1,22 @@
-﻿using CleanApp.Core.DTOs;
+﻿
+
+using CleanApp.Core.DTOs;
 using FluentValidation;
 
 namespace CleanApp.Infrastructure.Validators
 {
-    public class MonthValidator : AbstractValidator<MonthDto>
+    public class WeekValidator : AbstractValidator<WeekDto>
     {
-        public MonthValidator()
+        public WeekValidator()
         {
-            RuleFor(month => month.YearId)
+            RuleFor(week => week.MonthId)
                 .NotNull()
                 .NotEmpty();
 
-            RuleFor(month => month.MonthValue)
+            RuleFor(week => week.WeekValue)
                 .NotNull()
                 .NotEmpty()
-                .LessThan(13)
+                .LessThan(5)
                 .GreaterThan(0);
         }
     }

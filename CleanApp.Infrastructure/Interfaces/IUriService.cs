@@ -6,5 +6,6 @@ namespace CleanApp.Infrastructure.Services
     public interface IUriService
     {
         Uri GetMonthPaginationUri(MonthQueryFilter filters, string actionUrl);
+        Uri GetWeekPaginationUri(WeekQueryFilter filters, string actionUrl);
     }
 }
