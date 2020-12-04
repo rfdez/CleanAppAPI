@@ -6,7 +6,7 @@ namespace CleanApp.Core.DTOs
     {
         public int Id { get; set; }
 
-        public string CurrentUser { get; set; }
+        public string UserLogin { get; set; }
 
         public string UserName { get; set; }
 

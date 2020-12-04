@@ -21,7 +21,7 @@ namespace CleanApp.Core.Services
 
         public async Task RegisterUser(Authentication authentication)
         {
-            var exists = await _unitOfWork.AuthenticationRepository.GetLoginByCredentials(new UserLogin() { User = authentication.CurrentUser});
+            var exists = await _unitOfWork.AuthenticationRepository.GetLoginByCredentials(new UserLogin() { User = authentication.UserLogin});
 
             if (exists != null)
             {

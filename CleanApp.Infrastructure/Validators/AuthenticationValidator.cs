@@ -10,7 +10,7 @@ namespace CleanApp.Infrastructure.Validators
     {
         public AuthenticationValidator()
         {
-            RuleFor(auth => auth.CurrentUser)
+            RuleFor(auth => auth.UserLogin)
                 .NotNull()
                 .NotEmpty();
             

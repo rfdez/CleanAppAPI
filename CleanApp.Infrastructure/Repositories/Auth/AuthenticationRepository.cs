@@ -12,7 +12,7 @@ namespace CleanApp.Infrastructure.Repositories.Auth
 
         public async Task<Authentication> GetLoginByCredentials(UserLogin login)
         {
-            return await _entities.FirstOrDefaultAsync(u => u.CurrentUser == login.User);
+            return await _entities.FirstOrDefaultAsync(u => u.UserLogin == login.User);
         }
     }
 }

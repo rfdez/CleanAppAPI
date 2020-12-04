@@ -15,6 +15,16 @@ namespace CleanApp.Infrastructure.Data.Configurations
                     .IsRequired()
                     .HasMaxLength(35)
                     .IsUnicode(false);
+
+            builder.Property(e => e.AuthUser)
+                .HasColumnName("AuthUser")
+                .IsRequired()
+                .HasMaxLength(35)
+                .IsUnicode(false);
+
+            builder.HasIndex(e => e.AuthUser)
+                    .HasName("UC_AuthUser")
+                    .IsUnique();
         }
     }
 }

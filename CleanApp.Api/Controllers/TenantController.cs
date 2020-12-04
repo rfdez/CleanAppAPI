@@ -8,13 +8,14 @@ using CleanApp.Core.Entities;
 using CleanApp.Core.Enumerations;
 using CleanApp.Core.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Authorize(Roles = nameof(RoleType.Organizer))]
+    //[Authorize(Roles = nameof(RoleType.Organizer))]
     [Route("api/[controller]")]
     [ApiController]
     public class TenantController : ControllerBase
@@ -29,8 +30,10 @@ namespace CleanApp.Api.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet(Name = nameof(GetTenants))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<TenantDto>>), StatusCodes.Status200OK)]
+        public IActionResult GetTenants()
         {
             var tenants = _tenantService.GetTenants();
             var tenantsDto = _mapper.Map<IEnumerable<TenantDto>>(tenants);

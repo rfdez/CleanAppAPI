@@ -72,7 +72,7 @@ namespace CleanApp.Api.Controllers
             //Claims
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, authentication.CurrentUser),
+                new Claim(ClaimTypes.NameIdentifier, authentication.UserLogin),
                 new Claim(ClaimTypes.Name, authentication.UserName),
                 new Claim(ClaimTypes.Role, authentication.UserRole.ToString()),
             };

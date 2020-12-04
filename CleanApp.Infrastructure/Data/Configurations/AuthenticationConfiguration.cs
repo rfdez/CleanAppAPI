@@ -16,14 +16,14 @@ namespace CleanApp.Infrastructure.Data.Configurations
 
             builder.HasKey(e => e.Id);
 
-            builder.Property(e => e.CurrentUser)
-                .HasColumnName("CurrentUser")
+            builder.Property(e => e.UserLogin)
+                .HasColumnName("UserLogin")
                 .IsRequired()
                 .HasMaxLength(35)
                 .IsUnicode(false);
 
-            builder.HasIndex(e => e.CurrentUser)
-                    .HasName("UC_CurrentUser")
+            builder.HasIndex(e => e.UserLogin)
+                    .HasName("UC_UserLogin")
                     .IsUnique();
 
             builder.Property(e => e.UserName)

@@ -35,7 +35,7 @@ namespace CleanApp.Api.Controllers
         /// </summary>
         /// <param name="authenticationDto">Datos del usuario</param>
         /// <returns>Autenticación</returns>
-        [HttpPost(Name = nameof(RegisterAdministrator))]
+        [HttpPost(nameof(RegisterAdministrator), Name = nameof(RegisterAdministrator))]
         [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
@@ -52,7 +52,7 @@ namespace CleanApp.Api.Controllers
 
             var response = new ApiResponse<AuthenticationDto>(authenticationDto);
 
-            return Created(authenticationDto.CurrentUser, response);
+            return Created(authenticationDto.UserLogin, response);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace CleanApp.Api.Controllers
         /// </summary>
         /// <param name="authenticationDto">Datos del usuario</param>
         /// <returns>Autenticación</returns>
-        [HttpPost(Name = nameof(RegisterTenant))]
+        [HttpPost(nameof(RegisterTenant), Name = nameof(RegisterTenant))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> RegisterTenant(AuthenticationDto authenticationDto)
@@ -76,7 +76,7 @@ namespace CleanApp.Api.Controllers
 
             var response = new ApiResponse<AuthenticationDto>(authenticationDto);
 
-            return Created(authenticationDto.CurrentUser, response);
+            return Created(authenticationDto.UserLogin, response);
         }
     }
 }
