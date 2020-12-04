@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanApp.Api.Responses;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
+using CleanApp.Core.Enumerations;
 using CleanApp.Core.Services;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
+    [Authorize(Roles = nameof(RoleType.Organizer))]
     [Route("api/[controller]")]
     [ApiController]
     public class RoomController : ControllerBase

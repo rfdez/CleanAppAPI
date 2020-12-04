@@ -15,7 +15,6 @@ namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Authorize(Roles = nameof(RoleType.Administrator))]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
@@ -32,18 +31,43 @@ namespace CleanApp.Api.Controllers
         }
 
         /// <summary>
-        /// Función para darle autorización a un usuario al uso de tokens
+        /// Función para registrar un administrador
         /// </summary>
         /// <param name="authenticationDto">Datos del usuario</param>
-        /// <returns></returns>
-        [HttpPost(Name = nameof(RegisterUser))]
+        /// <returns>Autenticación</returns>
+        [HttpPost(Name = nameof(RegisterAdministrator))]
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
-        public async Task<IActionResult> RegisterUser(AuthenticationDto authenticationDto)
+        public async Task<IActionResult> RegisterAdministrator(AuthenticationDto authenticationDto)
         {
-            // a la hora de crear una authenticacion tambien se crearia y devolveria un tenant
             var user = _mapper.Map<Authentication>(authenticationDto);
             user.UserPassword = _passwordService.Hash(user.UserPassword);
+            user.UserRole = RoleType.Administrator;
+
+            await _authenticationService.RegisterUser(user);
+
+            authenticationDto = _mapper.Map<AuthenticationDto>(user);
+            authenticationDto.UserPassword = null;
+
+            var response = new ApiResponse<AuthenticationDto>(authenticationDto);
+
+            return Created(authenticationDto.CurrentUser, response);
+        }
+
+        /// <summary>
+        /// Función para registrar un inquilino
+        /// </summary>
+        /// <param name="authenticationDto">Datos del usuario</param>
+        /// <returns>Autenticación</returns>
+        [HttpPost(Name = nameof(RegisterTenant))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> RegisterTenant(AuthenticationDto authenticationDto)
+        {
+            var user = _mapper.Map<Authentication>(authenticationDto);
+            user.UserPassword = _passwordService.Hash(user.UserPassword);
+            user.UserRole = RoleType.Organizer;
 
             await _authenticationService.RegisterUser(user);
 
