@@ -91,8 +91,8 @@ namespace CleanApp.Api.Controllers
 
             Token token = new Token() {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-                CreatedIn = jwtToken.ValidFrom.ToString(),
-                ExpiresIn = jwtToken.ValidTo.ToString()
+                CreatedIn = jwtToken.ValidFrom,
+                ExpiresIn = jwtToken.ValidTo
             };
 
             return token;

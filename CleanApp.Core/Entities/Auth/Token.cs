@@ -8,8 +8,8 @@ namespace CleanApp.Core.Entities.Auth
 
         public string AccessToken { get; set; }
 
-        public string CreatedIn { get; set; }
+        public DateTime CreatedIn { get; set; }
 
-        public string ExpiresIn { get; set; }
+        public DateTime ExpiresIn { get; set; }
     }
 }
