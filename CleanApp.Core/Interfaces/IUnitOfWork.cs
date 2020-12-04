@@ -26,5 +26,7 @@ namespace CleanApp.Core.Interfaces
         void SaveChanges();
 
         Task SaveChangesAsync();
+
+        void DetachLocal<T>(T t, int entryId) where T : BaseEntity;
     }
 }

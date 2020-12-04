@@ -1,5 +1,6 @@
 ﻿using CleanApp.Core.CustomEntities;
 using CleanApp.Core.Entities;
+using CleanApp.Core.Exceptions;
 using CleanApp.Core.Interfaces;
 using CleanApp.Core.QueryFilters;
 using CleanApp.Infrastructure.Options;
@@ -37,33 +38,68 @@ namespace CleanApp.Core.Services
                 }
             }
 
-            var pagedWeeks = PagedList<Week>.Create(weeks, filters.PageNumber, filters.PageSize);
+            var pagedWeeks = PagedList<Week>.Create(weeks.Count() > 0 ? weeks : throw new BusinessException("No hay semanas disponibles."), filters.PageNumber, filters.PageSize);
 
             return pagedWeeks;
         }
 
         public async Task<Week> GetWeek(int id)
         {
-            return await _unitOfWork.WeekRepository.GetById(id);
+            return await _unitOfWork.WeekRepository.GetById(id) ?? throw new BusinessException("No existe la semana solicitada.");
         }
 
-        public async Task<bool> InsertWeek(Week week)
+        public async Task InsertWeek(Week week)
         {
+            var month = await _unitOfWork.MonthRepository.GetById(week.MonthId) ?? throw new BusinessException("El mes asignado no existe.");
+            var monthWeeks = await _unitOfWork.WeekRepository.GetWeeksByMonth(month.Id);
+
+            if (monthWeeks.Where(w => w.WeekValue == week.WeekValue).Count() > 0)
+            {
+                throw new BusinessException("No puede haber un mes con semanas repetidas.");
+            }
+
             await _unitOfWork.WeekRepository.Add(week);
-            return true;
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateWeekAsync(Week week)
+        public async Task UpdateWeekAsync(Week week)
         {
+            var existsWeek = await _unitOfWork.WeekRepository.GetById(week.Id) ?? throw new BusinessException("La semana que quiere editar no existe.");
+            var existsMonth = await _unitOfWork.MonthRepository.GetById(week.MonthId) ?? throw new BusinessException("El mes asignado no existe.");
+            var weeks = await _unitOfWork.WeekRepository.GetWeeksByMonth(existsMonth.Id);
+
+            if (existsWeek.MonthId != week.MonthId)
+            {
+                if (weeks.Where(w => w.WeekValue == week.WeekValue).Count() > 0)
+                {
+                    throw new BusinessException("No puede haber un mes con semanas repetidas.");
+
+                }
+            }
+            else
+            {
+                if (weeks.Except(new[] { existsWeek }).Where(w => w.WeekValue == week.WeekValue).Count() > 0)
+                {
+                    throw new BusinessException("Ya existe otra semana con ese valor para este mes.");
+                }
+            }
+
+            _unitOfWork.DetachLocal(week, week.Id);
             _unitOfWork.WeekRepository.Update(week);
             await _unitOfWork.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<bool> DeleteWeek(int id)
+        public async Task DeleteWeek(int id)
         {
+            var exists = await _unitOfWork.WeekRepository.GetById(id);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe la semana que desea borrar.");
+            }
+
             await _unitOfWork.WeekRepository.Delete(id);
-            return true;
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -8,10 +8,10 @@ namespace CleanApp.Core.Services
 {
     public interface IWeekService
     {
-        Task<bool> DeleteWeek(int id);
+        Task DeleteWeek(int id);
         Task<Week> GetWeek(int id);
         PagedList<Week> GetWeeks(WeekQueryFilter filters);
-        Task<bool> InsertWeek(Week week);
-        Task<bool> UpdateWeekAsync(Week week);
+        Task InsertWeek(Week week);
+        Task UpdateWeekAsync(Week week);
     }
 }

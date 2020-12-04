@@ -9,10 +9,12 @@ using CleanApp.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using CleanApp.Core.QueryFilters;
+using Microsoft.AspNetCore.Authorization;
+using CleanApp.Core.Enumerations;
 
 namespace CleanApp.Api.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = nameof(RoleType.Administrator))]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
@@ -88,10 +90,10 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Id del año</param>
         /// <param name="yearDto">Nuevos datos del año</param>
         /// <returns>Año actualizado</returns>
-        [HttpPut("{id}", Name = nameof(UpdateYear))]
+        [HttpPut("{id}", Name = nameof(UpdateYearAsync))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> UpdateYear(int id, YearDto yearDto)
+        public async Task<IActionResult> UpdateYearAsync(int id, YearDto yearDto)
         {
             var year = _mapper.Map<Year>(yearDto);
             year.Id = id;

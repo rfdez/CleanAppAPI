@@ -2,7 +2,9 @@
 using CleanApp.Core.Interfaces;
 using CleanApp.Infrastructure.Data;
 using CleanApp.Infrastructure.Repositories.Auth;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CleanApp.Infrastructure.Repositories
@@ -46,6 +48,18 @@ namespace CleanApp.Infrastructure.Repositories
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public void DetachLocal<T>(T t, int entryId) where T : BaseEntity
+        {
+            var local = _context.Set<T>()
+                .Local
+                .FirstOrDefault(entry => entry.Id.Equals(entryId));
+            if (local != null)
+            {
+                _context.Entry(local).State = EntityState.Detached;
+            }
+            _context.Entry(t).State = EntityState.Modified;
         }
     }
 }

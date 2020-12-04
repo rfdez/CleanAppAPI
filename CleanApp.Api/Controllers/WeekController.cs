@@ -6,15 +6,17 @@ using CleanApp.Api.Responses;
 using CleanApp.Core.CustomEntities;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
+using CleanApp.Core.Enumerations;
 using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanApp.Api.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = nameof(RoleType.Administrator))]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
@@ -83,56 +85,55 @@ namespace CleanApp.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post(WeekDto weekDto)
+        /// <summary>
+        /// Inserta la semana a un mes
+        /// </summary>
+        /// <param name="weekDto">Semana a insertar</param>
+        /// <returns>Semana creada</returns>
+        [HttpPost(Name = nameof(InsertWeek))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<WeekDto>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> InsertWeek(WeekDto weekDto)
         {
             var week = _mapper.Map<Week>(weekDto);
-            var inserted = await _weekService.InsertWeek(week);
+            await _weekService.InsertWeek(week);
             weekDto = _mapper.Map<WeekDto>(week);
 
-            var response = new ApiResponse<string>("Ningún registro insertado.");
-
-            if (inserted)
-            {
-                return Created($"{weekDto.Id}", new ApiResponse<WeekDto>(weekDto));
-
-            }
-
-            return BadRequest(response);
+            return CreatedAtAction(nameof(GetWeek), new { id = weekDto.Id }, new ApiResponse<WeekDto>(weekDto));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, WeekDto weekDto)
+        /// <summary>
+        /// Actualiza una semana del mes
+        /// </summary>
+        /// <param name="id">Identificador de la semana</param>
+        /// <param name="weekDto">Nuevo valor para la semana</param>
+        /// <returns></returns>
+        [HttpPut("{id}", Name = nameof(UpdateWeekAsync))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateWeekAsync(int id, WeekDto weekDto)
         {
             var week = _mapper.Map<Week>(weekDto);
             week.Id = id;
 
-            var updated = await _weekService.UpdateWeekAsync(week);
-            weekDto = _mapper.Map<WeekDto>(week);
+            await _weekService.UpdateWeekAsync(week);
 
-            var response = new ApiResponse<string>("Ningún registro actualizado.");
-
-            if (updated)
-            {
-                return Ok(new ApiResponse<WeekDto>(weekDto));
-            }
-
-            return BadRequest(response);
+            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        /// <summary>
+        /// Elimina una semana del mes
+        /// </summary>
+        /// <param name="id">Identificador de la semana</param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = nameof(DeleteWeek))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteWeek(int id)
         {
-            var deleted = await _weekService.DeleteWeek(id);
+            await _weekService.DeleteWeek(id);
 
-            var response = new ApiResponse<string>("Ningún registro eliminado.");
-
-            if (deleted)
-            {
-                return NoContent();
-            }
-
-            return BadRequest(response);
+            return NoContent();
         }
     }
 }

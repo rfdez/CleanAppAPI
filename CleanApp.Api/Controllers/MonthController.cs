@@ -11,10 +11,12 @@ using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using CleanApp.Core.Enumerations;
 
 namespace CleanApp.Api.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = nameof(RoleType.Administrator))]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]

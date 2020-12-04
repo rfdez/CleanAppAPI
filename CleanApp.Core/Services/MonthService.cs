@@ -37,7 +37,7 @@ namespace CleanApp.Core.Services
                 }
             }
 
-            var pagedMonths = PagedList<Month>.Create(months, filters.PageNumber, filters.PageSize);
+            var pagedMonths = PagedList<Month>.Create(months.Count() > 0 ? months : throw new BusinessException("No hay meses disponibles."), filters.PageNumber, filters.PageSize);
 
             return pagedMonths;
         }
@@ -49,7 +49,8 @@ namespace CleanApp.Core.Services
 
         public async Task InsertMonth(Month month)
         {
-            var yearMonths = await _unitOfWork.MonthRepository.GetMonthsByYear(month.YearId);
+            var year = await _unitOfWork.YearRepository.GetById(month.YearId) ?? throw new BusinessException("El año asignado no exixte.");
+            var yearMonths = await _unitOfWork.MonthRepository.GetMonthsByYear(year.Id);
 
             if (yearMonths.Where(m => m.MonthValue == month.MonthValue).Count() > 0)
             {
@@ -64,10 +65,10 @@ namespace CleanApp.Core.Services
         {
             var existMonth = await _unitOfWork.MonthRepository.GetById(month.Id) ?? throw new BusinessException("El mes que quiere editar no existe.");
             var existYear = await _unitOfWork.YearRepository.GetById(month.YearId) ?? throw new BusinessException("El año asignado no exixte.");
+            var months = await _unitOfWork.MonthRepository.GetMonthsByYear(existYear.Id);
 
             if (existMonth.YearId != month.YearId)
             {
-                var months = await _unitOfWork.MonthRepository.GetMonthsByYear(existYear.Id);
                 if (months.Where(m => m.MonthValue == month.MonthValue).Count() > 0)
                 {
                     throw new BusinessException("No puede haber un año con meses repetidos.");
@@ -75,13 +76,13 @@ namespace CleanApp.Core.Services
             }
             else
             {
-                var months = await _unitOfWork.MonthRepository.GetMonthsByYear(existYear.Id);
                 if (months.Except(new[] { existMonth }).Where(m => m.MonthValue == month.MonthValue).Count() > 0)
                 {
                     throw new BusinessException("Ya existe otro mes con ese valor para este año.");
                 }
             }
 
+            _unitOfWork.DetachLocal(month, month.Id);
             _unitOfWork.MonthRepository.Update(month);
             await _unitOfWork.SaveChangesAsync();
         }
