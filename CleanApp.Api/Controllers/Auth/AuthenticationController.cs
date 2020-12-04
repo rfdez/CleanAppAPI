@@ -46,6 +46,7 @@ namespace CleanApp.Api.Controllers
             await _authenticationService.RegisterUser(user);
 
             authenticationDto = _mapper.Map<AuthenticationDto>(user);
+            authenticationDto.UserPassword = null;
 
             var response = new ApiResponse<AuthenticationDto>(authenticationDto);
 
