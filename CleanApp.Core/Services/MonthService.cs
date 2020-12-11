@@ -1,12 +1,12 @@
-﻿using CleanApp.Core.Entities;
+﻿using CleanApp.Core.CustomEntities;
+using CleanApp.Core.Entities;
 using CleanApp.Core.Exceptions;
 using CleanApp.Core.Interfaces;
-using CleanApp.Core.CustomEntities;
 using CleanApp.Core.QueryFilters;
-using System.Linq;
-using System.Threading.Tasks;
 using CleanApp.Infrastructure.Options;
 using Microsoft.Extensions.Options;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services
 {

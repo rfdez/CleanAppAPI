@@ -11,7 +11,7 @@ namespace CleanApp.Infrastructure.Repositories
 {
     public class MonthRepository : BaseRepository<Month>, IMonthRepository
     {
-        public MonthRepository(CleanAppDDBBContext context) : base(context){ }
+        public MonthRepository(CleanAppDDBBContext context) : base(context) { }
 
         public async Task<IEnumerable<Month>> GetMonthsByYear(int yearId)
         {

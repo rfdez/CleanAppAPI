@@ -2,13 +2,12 @@
 using CleanApp.Api.Responses;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities.Auth;
-using CleanApp.Core.Enumerations;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CleanApp.Api.Controllers
@@ -31,45 +30,19 @@ namespace CleanApp.Api.Controllers
         }
 
         /// <summary>
-        /// Función para registrar un administrador
+        /// Función para registrar un usuario
         /// </summary>
         /// <param name="authenticationDto">Datos del usuario</param>
         /// <returns>Autenticación</returns>
-        [HttpPost(nameof(RegisterAdministrator), Name = nameof(RegisterAdministrator))]
-        [Authorize(Roles = nameof(RoleType.Administrator))]
+        [HttpPost(Name = nameof(RegisterUser))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
-        public async Task<IActionResult> RegisterAdministrator(AuthenticationDto authenticationDto)
+        public async Task<IActionResult> RegisterUser(AuthenticationDto authenticationDto)
         {
             var user = _mapper.Map<Authentication>(authenticationDto);
             user.UserPassword = _passwordService.Hash(user.UserPassword);
-            user.UserRole = RoleType.Administrator;
-
-            await _authenticationService.RegisterUser(user);
-
-            authenticationDto = _mapper.Map<AuthenticationDto>(user);
-            authenticationDto.UserPassword = null;
-
-            var response = new ApiResponse<AuthenticationDto>(authenticationDto);
-
-            return Created(authenticationDto.UserLogin, response);
-        }
-
-        /// <summary>
-        /// Función para registrar un inquilino
-        /// </summary>
-        /// <param name="authenticationDto">Datos del usuario</param>
-        /// <returns>Autenticación</returns>
-        [HttpPost(nameof(RegisterTenant), Name = nameof(RegisterTenant))]
-        [ProducesDefaultResponseType]
-        [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
-        public async Task<IActionResult> RegisterTenant(AuthenticationDto authenticationDto)
-        {
-            var user = _mapper.Map<Authentication>(authenticationDto);
-            user.UserPassword = _passwordService.Hash(user.UserPassword);
-            user.UserRole = RoleType.Organizer;
-
-            await _authenticationService.RegisterUser(user);
+            var currentUserRole = User.FindFirstValue(ClaimTypes.Role);
+            await _authenticationService.RegisterUser(user, currentUserRole);
 
             authenticationDto = _mapper.Map<AuthenticationDto>(user);
             authenticationDto.UserPassword = null;

@@ -3,7 +3,6 @@ using CleanApp.Core.Interfaces;
 using CleanApp.Infrastructure.Data;
 using CleanApp.Infrastructure.Repositories.Auth;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 

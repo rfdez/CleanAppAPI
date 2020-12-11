@@ -1,8 +1,8 @@
-﻿using CleanApp.Infrastructure.Data;
+﻿using CleanApp.Core.Entities;
 using CleanApp.Core.Entities.Auth;
-using System.Threading.Tasks;
-using CleanApp.Core.Entities;
+using CleanApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CleanApp.Infrastructure.Repositories.Auth
 {

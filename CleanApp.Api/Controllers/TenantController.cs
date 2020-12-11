@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Net.Mime;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CleanApp.Api.Responses;
+using CleanApp.Core.CustomEntities;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
-using CleanApp.Core.Enumerations;
+using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Services;
-using Microsoft.AspNetCore.Authorization;
+using CleanApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace CleanApp.Api.Controllers
 {
@@ -22,29 +23,58 @@ namespace CleanApp.Api.Controllers
     {
         private readonly ITenantService _tenantService;
         private readonly IMapper _mapper;
+        private readonly IUriService _uriSerice;
 
-        public TenantController(ITenantService tenantService, IMapper mapper)
+        public TenantController(ITenantService tenantService, IMapper mapper, IUriService uriService)
         {
             _tenantService = tenantService;
             _mapper = mapper;
+            _uriSerice = uriService;
         }
 
-
+        /// <summary>
+        /// Obtiene todos los inquilinos
+        /// </summary>
+        /// <param name="filters">Nombre del inquilino</param>
+        /// <returns>Inquilino</returns>
         [HttpGet(Name = nameof(GetTenants))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<TenantDto>>), StatusCodes.Status200OK)]
-        public IActionResult GetTenants()
+        public IActionResult GetTenants([FromQuery] TenantQueryFilter filters)
         {
-            var tenants = _tenantService.GetTenants();
+            var tenants = _tenantService.GetTenants(filters);
             var tenantsDto = _mapper.Map<IEnumerable<TenantDto>>(tenants);
 
-            var response = new ApiResponse<IEnumerable<TenantDto>>(tenantsDto);
+            var metadata = new Metadata
+            {
+                TotalCount = tenants.TotalCount,
+                PageSize = tenants.PageSize,
+                CurrentPage = tenants.CurrentPage,
+                TotalPages = tenants.TotalPages,
+                HasNextPage = tenants.HasNextPage,
+                HasPreviousPage = tenants.HasPreviousPage,
+                NextPageUrl = _uriSerice.GetTenantPaginationUri(filters, Url.RouteUrl(nameof(GetTenants))).ToString(),
+                PreviousPageUrl = _uriSerice.GetTenantPaginationUri(filters, Url.RouteUrl(nameof(GetTenants))).ToString()
+
+            };
+
+            var response = new ApiResponse<IEnumerable<TenantDto>>(tenantsDto)
+            {
+                Meta = metadata
+            };
 
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        /// <summary>
+        /// Obtiene un inquilino
+        /// </summary>
+        /// <param name="id">Identificador del inquilino</param>
+        /// <returns>Inquilino</returns>
+        [HttpGet("{id}", Name = nameof(GetTenant))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<TenantDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetTenant(int id)
         {
             var tenant = await _tenantService.GetTenant(id);
             var tenantDto = _mapper.Map<TenantDto>(tenant);
@@ -53,57 +83,40 @@ namespace CleanApp.Api.Controllers
 
             return Ok(response);
         }
-        
-        [HttpPost]
-        public async Task<IActionResult> Post(TenantDto tenantDto)
+
+        [HttpPost(Name = nameof(InsertTenant))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<TenantDto>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> InsertTenant(TenantDto tenantDto)
         {
             var tenant = _mapper.Map<Tenant>(tenantDto);
-            var inserted = await _tenantService.InsertTenant(tenant);
+            await _tenantService.InsertTenant(tenant);
             tenantDto = _mapper.Map<TenantDto>(tenant);
 
-            var response = new ApiResponse<string>("Ningún registro insertado.");
-
-            if (inserted)
-            {
-                return Created($"{tenantDto.Id}", new ApiResponse<TenantDto>(tenantDto));
-
-            }
-
-            return BadRequest(response);
+            return Created($"{tenantDto.Id}", new ApiResponse<TenantDto>(tenantDto));
         }
-        
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, TenantDto tenantDto)
+
+        [HttpPut("{id}", Name = nameof(UpdateTenantAsync))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateTenantAsync(int id, TenantDto tenantDto)
         {
             var tenant = _mapper.Map<Tenant>(tenantDto);
             tenant.Id = id;
 
-            var updated = await _tenantService.UpdateTenantAsync(tenant);
-            tenantDto = _mapper.Map<TenantDto>(tenant);
+            await _tenantService.UpdateTenantAsync(tenant);
 
-            var response = new ApiResponse<string>("Ningún registro actualizado.");
-
-            if (updated)
-            {
-                return Ok(new ApiResponse<TenantDto>(tenantDto));
-            }
-
-            return BadRequest(response);
+            return NoContent();
         }
-        
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+
+        [HttpDelete("{id}", Name = nameof(DeleteTenant))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteTenant(int id)
         {
-            var deleted = await _tenantService.DeleteTenant(id);
+            await _tenantService.DeleteTenant(id);
 
-            var response = new ApiResponse<string>("Ningún registro eliminado.");
-
-            if (deleted)
-            {
-                return NoContent();
-            }
-
-            return BadRequest(response);
+            return NoContent();
         }
     }
 }

@@ -3,8 +3,6 @@ using CleanApp.Core.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CleanApp.Infrastructure.Data.Configurations
 {
@@ -30,14 +28,14 @@ namespace CleanApp.Infrastructure.Data.Configurations
                 .HasColumnName("UserName")
                 .IsRequired()
                 .HasMaxLength(35)
-                .IsUnicode(false);            
+                .IsUnicode(false);
 
             builder.Property(e => e.UserPassword)
                 .HasColumnName("UserPassword")
                 .IsRequired()
                 .HasMaxLength(255)
                 .IsUnicode(false);
-            
+
             builder.Property(e => e.UserRole)
                 .HasColumnName("UserRole")
                 .IsRequired()

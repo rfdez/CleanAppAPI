@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using CleanApp.Core.Entities;
+﻿using CleanApp.Core.Entities;
 using CleanApp.Core.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace CleanApp.Infrastructure.Data
 {

@@ -1,8 +1,5 @@
 ﻿using CleanApp.Core.DTOs;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CleanApp.Infrastructure.Validators
 {
@@ -10,6 +7,10 @@ namespace CleanApp.Infrastructure.Validators
     {
         public TenantValidator()
         {
+            RuleFor(tenant => tenant.AuthUser)
+                .NotNull()
+                .NotEmpty();
+
             RuleFor(tenant => tenant.TenantName)
                 .NotNull()
                 .NotEmpty();

@@ -1,10 +1,4 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Mime;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using CleanApp.Api.Responses;
+﻿using CleanApp.Api.Responses;
 using CleanApp.Core.Entities;
 using CleanApp.Core.Entities.Auth;
 using CleanApp.Core.Services;
@@ -13,6 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mime;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CleanApp.Api.Controllers
 {
@@ -89,7 +89,8 @@ namespace CleanApp.Api.Controllers
 
             var jwtToken = new JwtSecurityToken(header, payload);
 
-            Token token = new Token() {
+            Token token = new Token()
+            {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken),
                 CreatedIn = jwtToken.ValidFrom,
                 ExpiresIn = jwtToken.ValidTo

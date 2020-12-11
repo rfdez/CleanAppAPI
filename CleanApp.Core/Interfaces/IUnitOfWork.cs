@@ -1,8 +1,6 @@
 ﻿using CleanApp.Core.Entities;
 using CleanApp.Infrastructure.Repositories.Auth;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Interfaces

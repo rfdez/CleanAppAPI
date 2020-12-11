@@ -1,7 +1,6 @@
 ﻿using CleanApp.Core.CustomEntities;
 using CleanApp.Core.Entities;
 using CleanApp.Core.QueryFilters;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services

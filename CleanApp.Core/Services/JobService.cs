@@ -1,8 +1,6 @@
 ﻿using CleanApp.Core.Entities;
 using CleanApp.Core.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services

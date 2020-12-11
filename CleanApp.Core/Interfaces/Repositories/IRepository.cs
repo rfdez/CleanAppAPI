@@ -1,7 +1,5 @@
 ﻿using CleanApp.Core.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Interfaces
@@ -15,7 +13,7 @@ namespace CleanApp.Core.Interfaces
         Task Add(T entity);
 
         void Update(T entity);
-        
+
         Task Delete(int id);
     }
 }

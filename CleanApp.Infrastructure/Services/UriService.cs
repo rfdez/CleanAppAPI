@@ -17,8 +17,15 @@ namespace CleanApp.Infrastructure.Services
 
             return new Uri(uri);
         }
-        
+
         public Uri GetWeekPaginationUri(WeekQueryFilter filters, string actionUrl)
+        {
+            string uri = $"{_baseUri}{actionUrl}";
+
+            return new Uri(uri);
+        }
+
+        public Uri GetTenantPaginationUri(TenantQueryFilter filters, string actionUrl)
         {
             string uri = $"{_baseUri}{actionUrl}";
 

@@ -1,7 +1,6 @@
 ﻿using CleanApp.Core.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
 using System.Net;
 
 namespace CleanApp.Infrastructure.Filters
@@ -31,7 +30,7 @@ namespace CleanApp.Infrastructure.Filters
                 context.ExceptionHandled = true;
             };
 
-            var response = new ProblemDetails() 
+            var response = new ProblemDetails()
             {
                 Type = HttpStatusCode.InternalServerError.ToString(),
                 Title = context.Exception.GetType().ToString(),

@@ -2,7 +2,6 @@
 using CleanApp.Core.Interfaces;
 using CleanApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CleanApp.Infrastructure.Repositories
@@ -11,5 +10,10 @@ namespace CleanApp.Infrastructure.Repositories
     {
         public TenantRepository(CleanAppDDBBContext context) : base(context) { }
 
+
+        public async Task<Tenant> GetTenantByAuthUser(string authUser)
+        {
+            return await _entities.FirstOrDefaultAsync(t => t.AuthUser == authUser);
+        }
     }
 }

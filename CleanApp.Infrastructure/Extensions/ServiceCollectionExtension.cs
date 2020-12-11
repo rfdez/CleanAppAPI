@@ -19,7 +19,7 @@ namespace CleanApp.Infrastructure.Extensions
     {
         public static IServiceCollection AddDbContexts(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<CleanAppDDBBContext>(options => 
+            services.AddDbContext<CleanAppDDBBContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("CleanAppDDBB")));
 
             return services;
@@ -29,10 +29,10 @@ namespace CleanApp.Infrastructure.Extensions
         {
             services.Configure<PaginationOptions>(options => configuration.GetSection("Pagination").Bind(options));
             services.Configure<PasswordOptions>(options => configuration.GetSection("PasswordOptions").Bind(options));
-            
+
             return services;
         }
-        
+
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             //Dependencias

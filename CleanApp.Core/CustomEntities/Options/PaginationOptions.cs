@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CleanApp.Infrastructure.Options
+﻿namespace CleanApp.Infrastructure.Options
 {
     public class PaginationOptions
     {

@@ -1,6 +1,6 @@
 using AutoMapper;
-using CleanApp.Infrastructure.Filters;
 using CleanApp.Infrastructure.Extensions;
+using CleanApp.Infrastructure.Filters;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

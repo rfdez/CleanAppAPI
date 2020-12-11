@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CleanApp.Core.DTOs
+﻿namespace CleanApp.Core.DTOs
 {
     public class TenantDto
     {

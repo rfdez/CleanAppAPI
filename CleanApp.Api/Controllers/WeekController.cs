@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Mime;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CleanApp.Api.Responses;
 using CleanApp.Core.CustomEntities;
 using CleanApp.Core.DTOs;
@@ -13,6 +10,9 @@ using CleanApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace CleanApp.Api.Controllers
 {

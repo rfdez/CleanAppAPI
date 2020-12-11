@@ -1,19 +1,20 @@
-﻿using CleanApp.Core.Entities;
-using System.Collections.Generic;
+﻿using CleanApp.Core.CustomEntities;
+using CleanApp.Core.Entities;
+using CleanApp.Core.QueryFilters;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services
 {
     public interface ITenantService
     {
-        IEnumerable<Tenant> GetTenants();
+        PagedList<Tenant> GetTenants(TenantQueryFilter filters);
 
         Task<Tenant> GetTenant(int id);
-        
-        Task<bool> InsertTenant(Tenant tenant);
 
-        Task<bool> UpdateTenantAsync(Tenant tenant);
+        Task InsertTenant(Tenant tenant);
 
-        Task<bool> DeleteTenant(int id);
+        Task UpdateTenantAsync(Tenant tenant);
+
+        Task DeleteTenant(int id);
     }
 }
