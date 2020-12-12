@@ -14,5 +14,10 @@ namespace CleanApp.Infrastructure.Repositories.Auth
         {
             return await _entities.FirstOrDefaultAsync(u => u.UserLogin == login.User);
         }
+
+        public async Task<Authentication> GetAuthenticationByUserLogin(string userLogin)
+        {
+            return await _entities.FirstOrDefaultAsync(u => u.UserLogin == userLogin);
+        }
     }
 }

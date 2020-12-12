@@ -84,6 +84,11 @@ namespace CleanApp.Api.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Inserta un inquilino
+        /// </summary>
+        /// <param name="tenantDto">Inquilino a insertar</param>
+        /// <returns>Inquilino insertado</returns>
         [HttpPost(Name = nameof(InsertTenant))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<TenantDto>), StatusCodes.Status201Created)]
@@ -96,6 +101,12 @@ namespace CleanApp.Api.Controllers
             return Created($"{tenantDto.Id}", new ApiResponse<TenantDto>(tenantDto));
         }
 
+        /// <summary>
+        /// Actualiza un inquilino
+        /// </summary>
+        /// <param name="id">Identificador del inquilino</param>
+        /// <param name="tenantDto">Nuevos valores del inquilino</param>
+        /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateTenantAsync))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -109,6 +120,11 @@ namespace CleanApp.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Elimina un inquilino
+        /// </summary>
+        /// <param name="id">Identificador del inquilino</param>
+        /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteTenant))]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

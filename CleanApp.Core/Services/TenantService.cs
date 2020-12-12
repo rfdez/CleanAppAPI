@@ -23,6 +23,13 @@ namespace CleanApp.Core.Services
 
         public async Task DeleteTenant(int id)
         {
+            var exists = await _unitOfWork.TenantRepository.GetById(id);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe el inquilino a borrar.");
+            }
+
             await _unitOfWork.TenantRepository.Delete(id);
         }
 
@@ -50,11 +57,48 @@ namespace CleanApp.Core.Services
 
         public async Task InsertTenant(Tenant tenant)
         {
+            var exists = await _unitOfWork.TenantRepository.GetTenantByAuthUser(tenant.AuthUser);
+
+            if (exists != null)
+            {
+                throw new BusinessException("Ya existe un inquilino asociado a las credenciales proporcionadas.");
+            }
+
+            var authUser = await _unitOfWork.AuthenticationRepository.GetAuthenticationByUserLogin(tenant.AuthUser);
+
+            if (authUser == null)
+            {
+                throw new BusinessException("El inquilino debe tener unas credenciales de inicio de sesión.");
+            }
+
             await _unitOfWork.TenantRepository.Add(tenant);
         }
 
         public async Task UpdateTenantAsync(Tenant tenant)
         {
+            var exists = await _unitOfWork.TenantRepository.GetById(tenant.Id);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe el inquilino a actualizar.");
+            }
+
+            if (tenant.AuthUser != exists.AuthUser)
+            {
+                var tenants = _unitOfWork.TenantRepository.GetAll();
+
+                if (tenants.Except(new[] { exists }).Where(t => t.AuthUser == tenant.AuthUser).Count() > 0)
+                {
+                    throw new BusinessException("Las nuevas credenciales del actual inquilino ya están asociadas a otro inquilino.");
+                }
+
+                var authUser = await _unitOfWork.AuthenticationRepository.GetAuthenticationByUserLogin(tenant.AuthUser);
+
+                if (authUser == null)
+                {
+                    throw new BusinessException("Las nuevas credenciales del inquilino deben existir.");
+                }
+            }
             _unitOfWork.TenantRepository.Update(tenant);
             await _unitOfWork.SaveChangesAsync();
         }

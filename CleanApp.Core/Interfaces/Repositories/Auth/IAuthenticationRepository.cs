@@ -8,5 +8,6 @@ namespace CleanApp.Infrastructure.Repositories.Auth
     public interface IAuthenticationRepository : IRepository<Authentication>
     {
         Task<Authentication> GetLoginByCredentials(UserLogin login);
+        Task<Authentication> GetAuthenticationByUserLogin(string userLogin);
     }
 }
