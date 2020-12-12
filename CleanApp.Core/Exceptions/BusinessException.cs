@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 
 namespace CleanApp.Core.Exceptions
 {
@@ -7,7 +6,6 @@ namespace CleanApp.Core.Exceptions
     {
         public BusinessException(string message) : base(message) { }
 
-        public HttpStatusCode Status { get; set; }
-        public object Value { get; set; }
+        public int? StatusCode { get; set; }
     }
 }
