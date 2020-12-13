@@ -1,15 +1,16 @@
-﻿using CleanApp.Core.Entities;
-using System.Collections.Generic;
+﻿using CleanApp.Core.CustomEntities;
+using CleanApp.Core.Entities;
+using CleanApp.Core.QueryFilters;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services
 {
     public interface IJobService
     {
-        Task<bool> DeleteJob(int id);
+        PagedList<Job> GetJobs(JobQueryFilter filters);
         Task<Job> GetJob(int id);
-        IEnumerable<Job> GetJobs();
-        Task<bool> InsertJob(Job job);
-        Task<bool> UpdateJobAsync(Job job);
+        Task InsertJob(Job job);
+        Task UpdateJobAsync(Job job);
+        Task DeleteJob(int id);
     }
 }

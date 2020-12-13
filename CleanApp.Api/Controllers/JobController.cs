@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using CleanApp.Api.Responses;
+using CleanApp.Core.CustomEntities;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
 using CleanApp.Core.Enumerations;
+using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Services;
+using CleanApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net.Mime;
@@ -21,26 +25,58 @@ namespace CleanApp.Api.Controllers
     {
         private readonly IJobService _jobService;
         private readonly IMapper _mapper;
+        private readonly IUriService _uriSerice;
 
-        public JobController(IJobService jobService, IMapper mapper)
+        public JobController(IJobService jobService, IMapper mapper, IUriService uriService)
         {
             _jobService = jobService;
             _mapper = mapper;
+            _uriSerice = uriService;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        /// <summary>
+        /// Obtiene la lista de tareas de una habitación
+        /// </summary>
+        /// <param name="filters">Filtrar por nombre o descripción de la tarea y su habitación</param>
+        /// <returns>Lista de tareas de una habitación</returns>
+        [HttpGet(Name = nameof(GetJobs))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<JobDto>>), StatusCodes.Status200OK)]
+        public IActionResult GetJobs([FromQuery] JobQueryFilter filters)
         {
-            var jobs = _jobService.GetJobs();
+            var jobs = _jobService.GetJobs(filters);
             var jobsDto = _mapper.Map<IEnumerable<JobDto>>(jobs);
 
-            var response = new ApiResponse<IEnumerable<JobDto>>(jobsDto);
+            var metadata = new Metadata
+            {
+                TotalCount = jobs.TotalCount,
+                PageSize = jobs.PageSize,
+                CurrentPage = jobs.CurrentPage,
+                TotalPages = jobs.TotalPages,
+                HasNextPage = jobs.HasNextPage,
+                HasPreviousPage = jobs.HasPreviousPage,
+                NextPageUrl = _uriSerice.GetJobPaginationUri(filters, Url.RouteUrl(nameof(GetJobs))).ToString(),
+                PreviousPageUrl = _uriSerice.GetJobPaginationUri(filters, Url.RouteUrl(nameof(GetJobs))).ToString()
+
+            };
+
+            var response = new ApiResponse<IEnumerable<JobDto>>(jobsDto)
+            {
+                Meta = metadata
+            };
 
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        /// <summary>
+        /// Obtiene una tarea
+        /// </summary>
+        /// <param name="id">Identificador de la tarea</param>
+        /// <returns>Una tarea</returns>
+        [HttpGet("{id}", Name = nameof(GetJob))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<JobDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetJob(int id)
         {
             var job = await _jobService.GetJob(id);
             var jobDto = _mapper.Map<JobDto>(job);
@@ -50,56 +86,55 @@ namespace CleanApp.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post(JobDto jobDto)
+        /// <summary>
+        /// Inserta una tarea a una habitación
+        /// </summary>
+        /// <param name="jobDto">Valores de la tarea</param>
+        /// <returns>Tarea insertada</returns>
+        [HttpPost(Name = nameof(InsertJob))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiResponse<JobDto>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> InsertJob(JobDto jobDto)
         {
             var job = _mapper.Map<Job>(jobDto);
-            var inserted = await _jobService.InsertJob(job);
+            await _jobService.InsertJob(job);
             jobDto = _mapper.Map<JobDto>(job);
 
-            var response = new ApiResponse<string>("Ningún registro insertado.");
-
-            if (inserted)
-            {
-                return Created($"{jobDto.Id}", new ApiResponse<JobDto>(jobDto));
-
-            }
-
-            return BadRequest(response);
+            return CreatedAtAction(nameof(GetJob), new { id = jobDto.Id }, new ApiResponse<JobDto>(jobDto));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, JobDto jobDto)
+        /// <summary>
+        /// Actualiza la tarea de una habitación
+        /// </summary>
+        /// <param name="id">Identificador de la tarea</param>
+        /// <param name="jobDto">Nuevos valores de la tarea</param>
+        /// <returns></returns>
+        [HttpPut("{id}", Name = nameof(UpdateJobAsync))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateJobAsync(int id, JobDto jobDto)
         {
             var job = _mapper.Map<Job>(jobDto);
             job.Id = id;
 
-            var updated = await _jobService.UpdateJobAsync(job);
-            jobDto = _mapper.Map<JobDto>(job);
+            await _jobService.UpdateJobAsync(job);
 
-            var response = new ApiResponse<string>("Ningún registro actualizado.");
-
-            if (updated)
-            {
-                return Ok(new ApiResponse<JobDto>(jobDto));
-            }
-
-            return BadRequest(response);
+            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        /// <summary>
+        /// Elimina una tarea de la habitación
+        /// </summary>
+        /// <param name="id">Identificador de la tarea</param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = nameof(DeleteJob))]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteJob(int id)
         {
-            var deleted = await _jobService.DeleteJob(id);
+            await _jobService.DeleteJob(id);
 
-            var response = new ApiResponse<string>("Ningún registro eliminado.");
-
-            if (deleted)
-            {
-                return NoContent();
-            }
-
-            return BadRequest(response);
+            return NoContent();
         }
     }
 }

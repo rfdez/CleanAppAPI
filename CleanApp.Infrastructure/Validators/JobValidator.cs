@@ -3,21 +3,25 @@ using FluentValidation;
 
 namespace CleanApp.Infrastructure.Validators
 {
-    public class TenantValidator : AbstractValidator<TenantDto>
+    public class JobValidator : AbstractValidator<JobDto>
     {
-        public TenantValidator()
+        public JobValidator()
         {
-            RuleFor(tenant => tenant.AuthUser)
+            RuleFor(job => job.RoomId)
+                .NotNull()
+                .NotEmpty();
+
+            RuleFor(job => job.JobName)
                 .NotNull()
                 .NotEmpty()
                 .MinimumLength(0)
                 .MaximumLength(36);
 
-            RuleFor(tenant => tenant.TenantName)
+            RuleFor(job => job.JobDescription)
                 .NotNull()
                 .NotEmpty()
                 .MinimumLength(0)
-                .MaximumLength(36);
+                .MaximumLength(256);
         }
     }
 }

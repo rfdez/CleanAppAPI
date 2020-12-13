@@ -9,15 +9,21 @@ namespace CleanApp.Infrastructure.Validators
         {
             RuleFor(home => home.HomeAddress)
                 .NotNull()
-                .NotEmpty();
+                .NotEmpty()
+                .MinimumLength(0)
+                .MaximumLength(256);
 
             RuleFor(home => home.HomeCity)
                 .NotNull()
-                .NotEmpty();
+                .NotEmpty()
+                .MinimumLength(0)
+                .MaximumLength(36);
 
             RuleFor(home => home.HomeCountry)
                 .NotNull()
-                .NotEmpty();
+                .NotEmpty()
+                .MinimumLength(0)
+                .MaximumLength(36);
 
             RuleFor(home => home.HomeZipCode)
                 .NotNull()

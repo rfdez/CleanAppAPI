@@ -9,7 +9,9 @@ namespace CleanApp.Infrastructure.Validators
         {
             RuleFor(room => room.RoomName)
                 .NotNull()
-                .NotEmpty();
+                .NotEmpty()
+                .MinimumLength(0)
+                .MaximumLength(36);
         }
     }
 }
