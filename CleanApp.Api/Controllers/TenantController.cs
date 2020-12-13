@@ -3,9 +3,11 @@ using CleanApp.Api.Responses;
 using CleanApp.Core.CustomEntities;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
+using CleanApp.Core.Enumerations;
 using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -16,7 +18,7 @@ namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    //[Authorize(Roles = nameof(RoleType.Organizer))]
+    [Authorize(Roles = nameof(RoleType.Organizer))]
     [Route("api/[controller]")]
     [ApiController]
     public class TenantController : ControllerBase

@@ -8,5 +8,6 @@ namespace CleanApp.Infrastructure.Services
         Uri GetMonthPaginationUri(MonthQueryFilter filters, string actionUrl);
         Uri GetWeekPaginationUri(WeekQueryFilter filters, string actionUrl);
         Uri GetTenantPaginationUri(TenantQueryFilter filters, string actionUrl);
+        Uri GetRoomPaginationUri(RoomQueryFilter filters, string actionUrl);
     }
 }

@@ -31,5 +31,12 @@ namespace CleanApp.Infrastructure.Services
 
             return new Uri(uri);
         }
+
+        public Uri GetRoomPaginationUri(RoomQueryFilter filters, string actionUrl)
+        {
+            string uri = $"{_baseUri}{actionUrl}";
+
+            return new Uri(uri);
+        }
     }
 }

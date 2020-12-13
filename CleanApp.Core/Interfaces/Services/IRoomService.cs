@@ -1,15 +1,16 @@
-﻿using CleanApp.Core.Entities;
-using System.Collections.Generic;
+﻿using CleanApp.Core.CustomEntities;
+using CleanApp.Core.Entities;
+using CleanApp.Core.QueryFilters;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services
 {
     public interface IRoomService
     {
-        Task<bool> DeleteRoom(int id);
+        Task DeleteRoom(int id);
         Task<Room> GetRoom(int id);
-        IEnumerable<Room> GetRooms();
-        Task<bool> InsertRoom(Room room);
-        Task<bool> UpdateRoomAsync(Room room);
+        PagedList<Room> GetRooms(RoomQueryFilter filters);
+        Task InsertRoom(Room room);
+        Task UpdateRoomAsync(Room room);
     }
 }
