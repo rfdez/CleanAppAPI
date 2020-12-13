@@ -38,5 +38,12 @@ namespace CleanApp.Infrastructure.Services
 
             return new Uri(uri);
         }
+
+        public Uri GetHomePaginationUri(HomeQueryFilter filters, string actionUrl)
+        {
+            string uri = $"{_baseUri}{actionUrl}";
+
+            return new Uri(uri);
+        }
     }
 }

@@ -3,6 +3,7 @@ using CleanApp.Core.Entities.Auth;
 using CleanApp.Core.Enumerations;
 using CleanApp.Core.Exceptions;
 using CleanApp.Core.Interfaces;
+using CleanApp.Core.Services.Auth;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services

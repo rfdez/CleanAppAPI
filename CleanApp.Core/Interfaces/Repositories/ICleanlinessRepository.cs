@@ -1,4 +1,4 @@
-﻿namespace CleanApp.Core.Interfaces
+﻿namespace CleanApp.Core.Interfaces.Repositories
 {
     public interface ICleanlinessRepository
     {

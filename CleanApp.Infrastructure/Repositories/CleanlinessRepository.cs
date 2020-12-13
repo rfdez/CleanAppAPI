@@ -1,6 +1,4 @@
-﻿
-
-using CleanApp.Core.Interfaces;
+﻿using CleanApp.Core.Interfaces.Repositories;
 
 namespace CleanApp.Infrastructure.Repositories
 {

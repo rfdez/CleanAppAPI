@@ -1,6 +1,6 @@
 ﻿
 using CleanApp.Core.Entities;
-using CleanApp.Core.Interfaces;
+using CleanApp.Core.Interfaces.Repositories;
 using CleanApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

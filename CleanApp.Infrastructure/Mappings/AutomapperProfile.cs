@@ -16,7 +16,8 @@ namespace CleanApp.Infrastructure.Mappings
             CreateMap<Room, RoomDto>().ReverseMap();
             CreateMap<Tenant, TenantDto>().ReverseMap();
             CreateMap<Week, WeekDto>().ReverseMap();
-            CreateMap<AuthenticationDto, Authentication>().ReverseMap();
+            CreateMap<Authentication, AuthenticationDto>().ReverseMap();
+            CreateMap<HomeDto, Home>().ReverseMap();
         }
     }
 }

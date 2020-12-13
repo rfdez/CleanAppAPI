@@ -1,5 +1,8 @@
 ﻿using CleanApp.Core.Interfaces;
+using CleanApp.Core.Interfaces.Repositories;
+using CleanApp.Core.Interfaces.Services;
 using CleanApp.Core.Services;
+using CleanApp.Core.Services.Auth;
 using CleanApp.Infrastructure.Data;
 using CleanApp.Infrastructure.Interfaces;
 using CleanApp.Infrastructure.Options;
@@ -50,6 +53,7 @@ namespace CleanApp.Infrastructure.Extensions
             services.AddTransient<IYearService, YearService>();
             services.AddTransient<IJobService, JobService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IHomeService, HomeService>();
             //Infrastructure
             services.AddSingleton<IPassworService, PasswordService>();
             services.AddSingleton<IUriService>(provider =>

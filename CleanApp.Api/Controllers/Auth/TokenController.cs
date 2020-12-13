@@ -1,7 +1,7 @@
 ﻿using CleanApp.Api.Responses;
 using CleanApp.Core.Entities;
 using CleanApp.Core.Entities.Auth;
-using CleanApp.Core.Services;
+using CleanApp.Core.Services.Auth;
 using CleanApp.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

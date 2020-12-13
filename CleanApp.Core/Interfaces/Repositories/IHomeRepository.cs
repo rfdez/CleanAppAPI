@@ -2,8 +2,7 @@
 
 namespace CleanApp.Core.Interfaces.Repositories
 {
-    public interface IRoomRepository : IRepository<Room>
+    public interface IHomeRepository : IRepository<Home>
     {
-
     }
 }

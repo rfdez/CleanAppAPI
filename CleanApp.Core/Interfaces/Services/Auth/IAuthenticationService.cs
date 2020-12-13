@@ -2,7 +2,7 @@
 using CleanApp.Core.Entities.Auth;
 using System.Threading.Tasks;
 
-namespace CleanApp.Core.Services
+namespace CleanApp.Core.Services.Auth
 {
     public interface IAuthenticationService
     {

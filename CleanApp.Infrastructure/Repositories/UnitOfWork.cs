@@ -1,5 +1,6 @@
 ﻿using CleanApp.Core.Entities;
 using CleanApp.Core.Interfaces;
+using CleanApp.Core.Interfaces.Repositories;
 using CleanApp.Infrastructure.Data;
 using CleanApp.Infrastructure.Repositories.Auth;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace CleanApp.Infrastructure.Repositories
 
         public IAuthenticationRepository AuthenticationRepository => new AuthenticationRepository(_context);
 
+        public IHomeRepository HomeRepository => new HomeRepository(_context);
+
 
         public void Dispose()
         {
@@ -54,10 +57,12 @@ namespace CleanApp.Infrastructure.Repositories
             var local = _context.Set<T>()
                 .Local
                 .FirstOrDefault(entry => entry.Id.Equals(entryId));
+
             if (local != null)
             {
                 _context.Entry(local).State = EntityState.Detached;
             }
+
             _context.Entry(t).State = EntityState.Modified;
         }
     }

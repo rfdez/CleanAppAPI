@@ -1,4 +1,5 @@
 ﻿using CleanApp.Core.Entities;
+using CleanApp.Core.Interfaces.Repositories;
 using CleanApp.Infrastructure.Repositories.Auth;
 using System;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace CleanApp.Core.Interfaces
         IJobRepository JobRepository { get; }
 
         IAuthenticationRepository AuthenticationRepository { get; }
+
+        IHomeRepository HomeRepository { get; }
 
         void SaveChanges();
 
