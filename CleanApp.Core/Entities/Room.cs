@@ -11,7 +11,9 @@ namespace CleanApp.Core.Entities
         }
 
         public string RoomName { get; set; }
+        public int HomeId { get; set; }
 
+        public virtual Home Home { get; set; }
         public virtual ICollection<Cleanliness> Cleanlinesses { get; set; }
         public virtual ICollection<Job> Jobs { get; set; }
     }
