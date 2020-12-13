@@ -12,6 +12,12 @@ namespace CleanApp.Infrastructure.Data.Configurations
                     .IsRequired()
                     .HasMaxLength(35)
                     .IsUnicode(false);
+
+            builder.HasOne(d => d.Home)
+                    .WithMany(p => p.Rooms)
+                    .HasForeignKey(d => d.HomeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_HomeRoom");
         }
     }
 }

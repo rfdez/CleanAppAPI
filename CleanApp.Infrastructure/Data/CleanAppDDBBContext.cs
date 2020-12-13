@@ -24,7 +24,8 @@ namespace CleanApp.Infrastructure.Data
         public virtual DbSet<Week> Weeks { get; set; }
         public virtual DbSet<Year> Years { get; set; }
         public virtual DbSet<Authentication> Authentications { get; set; }
-
+        public virtual DbSet<Home> Homes { get; set; }
+        public virtual DbSet<HomeTenant> HomeTenant { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

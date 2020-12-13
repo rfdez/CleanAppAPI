@@ -7,6 +7,7 @@ namespace CleanApp.Core.Entities
         public Tenant()
         {
             Cleanlinesses = new HashSet<Cleanliness>();
+            Homes = new HashSet<HomeTenant>();
         }
 
         public string AuthUser { get; set; }
@@ -14,5 +15,6 @@ namespace CleanApp.Core.Entities
         public string TenantName { get; set; }
 
         public virtual ICollection<Cleanliness> Cleanlinesses { get; set; }
+        public virtual ICollection<HomeTenant> Homes { get; set; }
     }
 }
