@@ -40,7 +40,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="filters">Filtrar por año</param>
         /// <returns>Lista de meses</returns>
         [HttpGet(Name = nameof(GetMonths))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<MonthDto>>), StatusCodes.Status200OK)]
         public IActionResult GetMonths([FromQuery] MonthQueryFilter filters)
         {
@@ -74,7 +73,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador del mes</param>
         /// <returns>Un mes</returns>
         [HttpGet("{id}", Name = nameof(GetMonth))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMonth(int id)
         {
@@ -92,7 +90,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="monthDto">Mes a insertar</param>
         /// <returns>Mes insertado</returns>
         [HttpPost(Name = nameof(InsertMonth))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertMonth(MonthDto monthDto)
         {
@@ -110,7 +107,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="monthDto">Nuevo valor del mes</param>
         /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateMonthAsync))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateMonthAsync(int id, MonthDto monthDto)
         {
@@ -128,7 +124,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador del mes</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteMonth))]
-        [ProducesDefaultResponseType]
+
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteMonth(int id)
         {

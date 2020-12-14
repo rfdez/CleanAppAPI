@@ -30,12 +30,11 @@ namespace CleanApp.Api.Controllers
         }
 
         /// <summary>
-        /// Función para registrar un usuario
+        /// Registra un usuario en la aplicación
         /// </summary>
         /// <param name="authenticationDto">Datos del usuario</param>
         /// <returns>Autenticación</returns>
         [HttpPost(Name = nameof(RegisterUser))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> RegisterUser(AuthenticationDto authenticationDto)
         {

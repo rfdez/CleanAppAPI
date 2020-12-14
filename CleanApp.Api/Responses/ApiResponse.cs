@@ -1,8 +1,9 @@
 ﻿using CleanApp.Core.CustomEntities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanApp.Api.Responses
 {
-    public class ApiResponse<T>
+    public class ApiResponse<T> : ActionResult
     {
         public ApiResponse(T data)
         {

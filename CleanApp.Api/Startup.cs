@@ -30,6 +30,15 @@ namespace CleanApp.Api
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("*");
+                    });
+            });
+
             services.AddControllers(options =>
             {
                 options.Filters.Add<GlobalExceptionFilter>();
@@ -94,6 +103,7 @@ namespace CleanApp.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

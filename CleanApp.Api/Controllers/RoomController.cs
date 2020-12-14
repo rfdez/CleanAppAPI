@@ -38,7 +38,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="filters">Filtrar por nombre</param>
         /// <returns>Lista de habitaciones</returns>
         [HttpGet(Name = nameof(GetRooms))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<RoomDto>>), StatusCodes.Status200OK)]
         public IActionResult GetRooms([FromQuery] RoomQueryFilter filters)
         {
@@ -72,7 +71,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador de la habitación</param>
         /// <returns>Una habitación</returns>
         [HttpGet("{id}", Name = nameof(GetRoom))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<RoomDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRoom(int id)
         {
@@ -90,7 +88,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="roomDto">Valores de la habitación</param>
         /// <returns>Habitación insertada</returns>
         [HttpPost(Name = nameof(InsertRoom))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<RoomDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertRoom(RoomDto roomDto)
         {
@@ -108,7 +105,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="roomDto">Nuevos valores de la habitación</param>
         /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateRoomAsync))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateRoomAsync(int id, RoomDto roomDto)
         {
@@ -126,7 +122,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador de la habitación</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteRoom))]
-        [ProducesDefaultResponseType]
+
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteRoom(int id)
         {

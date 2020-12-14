@@ -40,7 +40,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="filters">Filtrar por nombre o descripción de la tarea y su habitación</param>
         /// <returns>Lista de tareas de una habitación</returns>
         [HttpGet(Name = nameof(GetJobs))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<JobDto>>), StatusCodes.Status200OK)]
         public IActionResult GetJobs([FromQuery] JobQueryFilter filters)
         {
@@ -74,7 +73,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador de la tarea</param>
         /// <returns>Una tarea</returns>
         [HttpGet("{id}", Name = nameof(GetJob))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<JobDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetJob(int id)
         {
@@ -92,7 +90,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="jobDto">Valores de la tarea</param>
         /// <returns>Tarea insertada</returns>
         [HttpPost(Name = nameof(InsertJob))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<JobDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertJob(JobDto jobDto)
         {
@@ -110,7 +107,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="jobDto">Nuevos valores de la tarea</param>
         /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateJobAsync))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateJobAsync(int id, JobDto jobDto)
         {
@@ -128,7 +124,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador de la tarea</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteJob))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteJob(int id)
         {

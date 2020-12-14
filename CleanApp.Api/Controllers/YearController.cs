@@ -35,7 +35,6 @@ namespace CleanApp.Api.Controllers
         /// </summary>
         /// <returns>Lista de años</returns>
         [HttpGet(Name = nameof(GetYears))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<MonthDto>>), StatusCodes.Status200OK)]
         public IActionResult GetYears([FromQuery] YearQueryFilter filters)
         {
@@ -53,7 +52,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Id del año</param>
         /// <returns>El año solicitado</returns>
         [HttpGet("{id}", Name = nameof(GetYear))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetYear(int id)
         {
@@ -71,7 +69,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="yearDto">Valor del año</param>
         /// <returns>El año insertado</returns>
         [HttpPost(Name = nameof(InsertYear))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertYear(YearDto yearDto)
         {
@@ -91,7 +88,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="yearDto">Nuevos datos del año</param>
         /// <returns>Año actualizado</returns>
         [HttpPut("{id}", Name = nameof(UpdateYearAsync))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateYearAsync(int id, YearDto yearDto)
         {
@@ -108,7 +104,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Id del año</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteYear))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteYear(int id)
         {

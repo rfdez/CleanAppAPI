@@ -38,7 +38,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="login">Usuario y contraseña</param>
         /// <returns>Token</returns>
         [HttpPost(Name = nameof(GenerateToken))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<Token>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GenerateToken(UserLogin login)
         {

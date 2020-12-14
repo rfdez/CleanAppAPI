@@ -40,7 +40,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="filters">Filtrar por ubicación de la vivienda o inquilinos</param>
         /// <returns>Lista de viviendas</returns>
         [HttpGet(Name = nameof(GetHomes))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<HomeDto>>), StatusCodes.Status200OK)]
         public IActionResult GetHomes([FromQuery] HomeQueryFilter filters)
         {
@@ -74,7 +73,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador de la vivienda</param>
         /// <returns>Vivienda solicitada</returns>
         [HttpGet("{id}", Name = nameof(GetHome))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<HomeDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetHome(int id)
         {
@@ -92,7 +90,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="homeDto">Valores de la nueva vivienda</param>
         /// <returns>Vivienda insertada</returns>
         [HttpPost(Name = nameof(InsertHome))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<HomeDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertHome(HomeDto homeDto)
         {
@@ -110,7 +107,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="homeDto">Nuevos valores para la vivienda</param>
         /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateHomeAsync))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateHomeAsync(int id, HomeDto homeDto)
         {
@@ -128,7 +124,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador de la vivienda</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteHome))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteHome(int id)
         {

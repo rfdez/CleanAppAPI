@@ -40,7 +40,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="filters">Nombre del inquilino</param>
         /// <returns>Inquilino</returns>
         [HttpGet(Name = nameof(GetTenants))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<TenantDto>>), StatusCodes.Status200OK)]
         public IActionResult GetTenants([FromQuery] TenantQueryFilter filters)
         {
@@ -74,7 +73,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador del inquilino</param>
         /// <returns>Inquilino</returns>
         [HttpGet("{id}", Name = nameof(GetTenant))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<TenantDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTenant(int id)
         {
@@ -92,7 +90,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="tenantDto">Inquilino a insertar</param>
         /// <returns>Inquilino insertado</returns>
         [HttpPost(Name = nameof(InsertTenant))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<TenantDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertTenant(TenantDto tenantDto)
         {
@@ -110,7 +107,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="tenantDto">Nuevos valores del inquilino</param>
         /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateTenantAsync))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateTenantAsync(int id, TenantDto tenantDto)
         {
@@ -128,7 +124,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador del inquilino</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteTenant))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteTenant(int id)
         {

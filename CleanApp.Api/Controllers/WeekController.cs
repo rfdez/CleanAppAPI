@@ -40,7 +40,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="filters">Filtrar semanas por mes</param>
         /// <returns>Lista de semanas</returns>
         [HttpGet(Name = nameof(GetWeeks))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<WeekDto>>), StatusCodes.Status200OK)]
         public IActionResult GetWeeks([FromQuery] WeekQueryFilter filters)
         {
@@ -73,7 +72,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identidficador de la semana</param>
         /// <returns>Una semana</returns>
         [HttpGet("{id}", Name = nameof(GetWeek))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<WeekDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetWeek(int id)
         {
@@ -91,7 +89,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="weekDto">Semana a insertar</param>
         /// <returns>Semana creada</returns>
         [HttpPost(Name = nameof(InsertWeek))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(typeof(ApiResponse<WeekDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertWeek(WeekDto weekDto)
         {
@@ -109,7 +106,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="weekDto">Nuevo valor para la semana</param>
         /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateWeekAsync))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateWeekAsync(int id, WeekDto weekDto)
         {
@@ -127,7 +123,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador de la semana</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteWeek))]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteWeek(int id)
         {
