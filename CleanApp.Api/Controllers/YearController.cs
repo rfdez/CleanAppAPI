@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using CleanApp.Api.Responses;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
 using CleanApp.Core.Enumerations;
 using CleanApp.Core.QueryFilters;
+using CleanApp.Core.Responses;
 using CleanApp.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
