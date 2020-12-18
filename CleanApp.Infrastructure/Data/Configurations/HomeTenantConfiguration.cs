@@ -1,6 +1,8 @@
 ﻿using CleanApp.Core.Entities;
+using CleanApp.Core.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace CleanApp.Infrastructure.Data.Configurations
 {
@@ -21,6 +23,16 @@ namespace CleanApp.Infrastructure.Data.Configurations
                 .HasForeignKey(d => d.TenantId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TenantHome");
+
+            builder.Property(e => e.TenantRole)
+                .HasColumnName("TenantRole")
+                .IsRequired()
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasConversion(
+                    c => c.ToString(),
+                    c => (TenantRole)Enum.Parse(typeof(TenantRole), c)
+                );
         }
     }
 }

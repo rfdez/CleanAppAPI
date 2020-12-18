@@ -1,6 +1,6 @@
 ﻿namespace CleanApp.Core.Enumerations
 {
-    public enum ErrorCodes
+    public enum ErrorCode
     {
         /// <summary>
         /// Esta respuesta significa que el servidor no pudo interpretar la solicitud dada una sintaxis inválida.

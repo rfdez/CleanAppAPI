@@ -82,7 +82,6 @@ namespace CleanApp.Core.Services
                 }
             }
 
-            _unitOfWork.DetachLocal(month, month.Id);
             _unitOfWork.MonthRepository.Update(month);
             await _unitOfWork.SaveChangesAsync();
         }

@@ -9,7 +9,7 @@ namespace CleanApp.Infrastructure.Filters
     {
         public void OnException(ExceptionContext context)
         {
-            var statusCode = ErrorCodes.InternalServerError;
+            var statusCode = ErrorCode.InternalServerError;
 
             if (context.Exception.GetType() == typeof(BusinessException))
             {

@@ -10,7 +10,7 @@ using System.Net.Mime;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace CleanApp.Api.Controllers
+namespace CleanApp.Api.Auth.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
@@ -40,7 +40,8 @@ namespace CleanApp.Api.Controllers
         {
             var user = _mapper.Map<Authentication>(authenticationDto);
             user.UserPassword = _passwordService.Hash(user.UserPassword);
-            var currentUserRole = User.FindFirstValue(ClaimTypes.Role);
+            string currentUserRole = User.FindFirstValue(ClaimTypes.Role);
+
             await _authenticationService.RegisterUser(user, currentUserRole);
 
             authenticationDto = _mapper.Map<AuthenticationDto>(user);

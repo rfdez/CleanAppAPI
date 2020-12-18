@@ -66,7 +66,6 @@ namespace CleanApp.Core.Services
 
             var currentYear = exsists.First();
 
-            _unitOfWork.DetachLocal(currentYear, currentYear.Id);
             currentYear.YearValue = year.YearValue;
             _unitOfWork.YearRepository.Update(year);
 

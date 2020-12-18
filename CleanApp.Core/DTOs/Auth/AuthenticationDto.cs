@@ -12,6 +12,6 @@ namespace CleanApp.Core.DTOs
 
         public string UserPassword { get; set; }
 
-        public RoleType UserRole { get; set; } = RoleType.Organizer;
+        public RoleType UserRole { get; set; }
     }
 }

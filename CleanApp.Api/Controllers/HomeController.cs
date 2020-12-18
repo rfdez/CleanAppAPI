@@ -2,7 +2,6 @@
 using CleanApp.Core.CustomEntities;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
-using CleanApp.Core.Enumerations;
 using CleanApp.Core.Interfaces.Services;
 using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Responses;
@@ -18,7 +17,7 @@ namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Authorize(Roles = nameof(RoleType.Organizer))]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class HomeController : ControllerBase

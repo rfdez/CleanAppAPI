@@ -27,6 +27,8 @@ namespace CleanApp.Infrastructure.Validators
                 .Matches(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
 
             RuleFor(auth => auth.UserRole)
+                .NotNull()
+                .NotEmpty()
                 .IsInEnum();
         }
     }

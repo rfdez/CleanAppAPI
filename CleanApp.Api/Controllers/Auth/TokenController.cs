@@ -1,5 +1,6 @@
 ﻿using CleanApp.Core.Entities;
 using CleanApp.Core.Entities.Auth;
+using CleanApp.Core.Enumerations;
 using CleanApp.Core.Responses;
 using CleanApp.Core.Services.Auth;
 using CleanApp.Infrastructure.Interfaces;
@@ -14,7 +15,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanApp.Api.Controllers
+namespace CleanApp.Api.Auth.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
@@ -83,8 +84,8 @@ namespace CleanApp.Api.Controllers
                     _configuration["Authentication:Audience"],
                     claims,
                     DateTime.Now,
-                    DateTime.Now.AddMinutes(_configuration.GetValue<double>("Authentication:TokenLife"))
-                );
+                    authentication.UserRole == RoleType.Administrator ? DateTime.Now.AddMinutes(_configuration.GetValue<double>("Authentication:AdminTokenLife")) : DateTime.Now.AddMinutes(_configuration.GetValue<double>("Authentication:TokenLife"))
+                ); ;
 
             var jwtToken = new JwtSecurityToken(header, payload);
 

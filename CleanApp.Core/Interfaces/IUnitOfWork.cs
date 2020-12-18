@@ -1,5 +1,4 @@
-﻿using CleanApp.Core.Entities;
-using CleanApp.Core.Interfaces.Repositories;
+﻿using CleanApp.Core.Interfaces.Repositories;
 using CleanApp.Infrastructure.Repositories.Auth;
 using System;
 using System.Threading.Tasks;
@@ -24,10 +23,10 @@ namespace CleanApp.Core.Interfaces
 
         IHomeRepository HomeRepository { get; }
 
+        IHomeTenantRepository HomeTenantRepository { get; }
+
         void SaveChanges();
 
         Task SaveChangesAsync();
-
-        void DetachLocal<T>(T t, int entryId) where T : BaseEntity;
     }
 }

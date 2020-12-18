@@ -50,7 +50,6 @@ namespace CleanApp.Core.Services
                 throw new BusinessException("No existe la vivienda a actualizar.");
             }
 
-            _unitOfWork.DetachLocal(home, home.Id);
             _unitOfWork.HomeRepository.Update(home);
             await _unitOfWork.SaveChangesAsync();
         }

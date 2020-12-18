@@ -2,8 +2,13 @@
 {
     public enum RoleType
     {
+        /// <summary>
+        /// Administrador
+        /// </summary>
         Administrator,
-        Organizer,
+        /// <summary>
+        /// Consumidor
+        /// </summary>
         Consumer
     }
 }

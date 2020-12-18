@@ -7,7 +7,7 @@ namespace CleanApp.Core.Exceptions
     {
         public BusinessException(string message) : base(message) { }
 
-        public ErrorCodes StatusCode { get; set; }
+        public ErrorCode StatusCode { get; set; } = ErrorCode.BadRequest;
 
         public object Value { get; set; }
     }

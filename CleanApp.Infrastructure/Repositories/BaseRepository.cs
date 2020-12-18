@@ -42,6 +42,9 @@ namespace CleanApp.Infrastructure.Repositories
 
         public void Update(T entity)
         {
+            _context.Entry(_entities.Local.FirstOrDefault(e => e.Id.Equals(entity.Id))).State = EntityState.Deleted;
+            _context.Entry(entity).State = EntityState.Modified;
+
             _entities.Update(entity);
         }
     }
