@@ -17,8 +17,8 @@ namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Authorize]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class JobController : ControllerBase
     {
@@ -53,8 +53,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = jobs.TotalPages,
                 HasNextPage = jobs.HasNextPage,
                 HasPreviousPage = jobs.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetJobPaginationUri(filters, Url.RouteUrl(nameof(GetJobs))).ToString(),
-                PreviousPageUrl = _uriSerice.GetJobPaginationUri(filters, Url.RouteUrl(nameof(GetJobs))).ToString()
+                NextPageUrl = _uriSerice.GetPaginationUri((int)jobs.NextPageNumber, jobs.PageSize, Url.RouteUrl(nameof(GetJobs))).ToString(),
+                PreviousPageUrl = _uriSerice.GetPaginationUri((int)jobs.NextPageNumber, jobs.PageSize, Url.RouteUrl(nameof(GetJobs))).ToString()
 
             };
 

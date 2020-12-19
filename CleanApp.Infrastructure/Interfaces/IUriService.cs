@@ -5,12 +5,14 @@ namespace CleanApp.Infrastructure.Services
 {
     public interface IUriService
     {
-        Uri GetMonthPaginationUri(MonthQueryFilter filters, string actionUrl);
-        Uri GetWeekPaginationUri(WeekQueryFilter filters, string actionUrl);
-        Uri GetTenantPaginationUri(TenantQueryFilter filters, string actionUrl);
-        Uri GetRoomPaginationUri(RoomQueryFilter filters, string actionUrl);
-        Uri GetHomePaginationUri(HomeQueryFilter filters, string actionUrl);
-        Uri GetJobPaginationUri(JobQueryFilter filters, string actionUrl);
-        Uri GetHomeTenantPaginationUri(HomeTenantQueryFilter filters, string actionUrl);
+        Uri GetPaginationUri(int pageNumer, int pageSize, string actionUrl);
+        string GetMonthFilterUri(MonthQueryFilter filters);
+        string GetWeekFilterUri(WeekQueryFilter filters);
+        string GetTenantFilterUri(TenantQueryFilter filters);
+        string GetRoomFilterUri(RoomQueryFilter filters);
+        string GetHomeFilterUri(HomeQueryFilter filters);
+        string GetJobFilterUri(JobQueryFilter filters);
+        string GetHomeTenantFilterUri(HomeTenantQueryFilter filters);
+        string GetCleanlinessFilterUri(CleanlinessQueryFilter filters);
     }
 }

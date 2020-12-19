@@ -17,8 +17,8 @@ namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Authorize]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class HomeController : ControllerBase
     {
@@ -53,8 +53,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = homes.TotalPages,
                 HasNextPage = homes.HasNextPage,
                 HasPreviousPage = homes.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetHomePaginationUri(filters, Url.RouteUrl(nameof(GetHomes))).ToString(),
-                PreviousPageUrl = _uriSerice.GetHomePaginationUri(filters, Url.RouteUrl(nameof(GetHomes))).ToString()
+                NextPageUrl = _uriSerice.GetPaginationUri((int)homes.NextPageNumber, homes.PageSize, Url.RouteUrl(nameof(GetHomes))).ToString(),
+                PreviousPageUrl = _uriSerice.GetPaginationUri((int)homes.NextPageNumber, homes.PageSize, Url.RouteUrl(nameof(GetHomes))).ToString()
 
             };
 

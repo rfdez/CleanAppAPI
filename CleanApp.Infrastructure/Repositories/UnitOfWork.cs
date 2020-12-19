@@ -32,6 +32,8 @@ namespace CleanApp.Infrastructure.Repositories
 
         public IHomeTenantRepository HomeTenantRepository => new HomeTenantRepository(_context);
 
+        public ICleanlinessRepository CleanlinessRepository => new CleanlinessRepository(_context);
+
 
         public void Dispose()
         {

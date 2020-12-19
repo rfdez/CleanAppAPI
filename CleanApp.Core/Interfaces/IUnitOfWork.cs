@@ -25,6 +25,8 @@ namespace CleanApp.Core.Interfaces
 
         IHomeTenantRepository HomeTenantRepository { get; }
 
+        ICleanlinessRepository CleanlinessRepository { get; }
+
         void SaveChanges();
 
         Task SaveChangesAsync();

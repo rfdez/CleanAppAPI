@@ -55,6 +55,7 @@ namespace CleanApp.Infrastructure.Extensions
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IHomeTenantService, HomeTenantService>();
+            services.AddTransient<ICleanlinessService, CleanlinessService>();
             //Infrastructure
             services.AddSingleton<IPassworService, PasswordService>();
             services.AddSingleton<IUriService>(provider =>

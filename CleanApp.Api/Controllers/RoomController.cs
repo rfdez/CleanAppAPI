@@ -6,6 +6,7 @@ using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Responses;
 using CleanApp.Core.Services;
 using CleanApp.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    //[Authorize(Roles = nameof(RoleType.Organizer))]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class RoomController : ControllerBase
     {
@@ -52,8 +53,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = rooms.TotalPages,
                 HasNextPage = rooms.HasNextPage,
                 HasPreviousPage = rooms.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetRoomPaginationUri(filters, Url.RouteUrl(nameof(GetRooms))).ToString(),
-                PreviousPageUrl = _uriSerice.GetRoomPaginationUri(filters, Url.RouteUrl(nameof(GetRooms))).ToString()
+                NextPageUrl = _uriSerice.GetPaginationUri((int)rooms.NextPageNumber, rooms.PageSize, Url.RouteUrl(nameof(GetRooms))).ToString(),
+                PreviousPageUrl = _uriSerice.GetPaginationUri((int)rooms.NextPageNumber, rooms.PageSize, Url.RouteUrl(nameof(GetRooms))).ToString()
 
             };
 

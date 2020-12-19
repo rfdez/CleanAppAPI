@@ -18,8 +18,8 @@ namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Authorize(Roles = nameof(RoleType.Administrator))]
     [Route("api/[controller]")]
+    [Authorize(Roles = nameof(RoleType.Administrator))]
     [ApiController]
     public class MonthController : ControllerBase
     {
@@ -54,8 +54,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = months.TotalPages,
                 HasNextPage = months.HasNextPage,
                 HasPreviousPage = months.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetMonthPaginationUri(filters, Url.RouteUrl(nameof(GetMonths))).ToString(),
-                PreviousPageUrl = _uriSerice.GetMonthPaginationUri(filters, Url.RouteUrl(nameof(GetMonths))).ToString()
+                NextPageUrl = _uriSerice.GetPaginationUri((int)months.NextPageNumber, months.PageSize, Url.RouteUrl(nameof(GetMonths))).ToString(),
+                PreviousPageUrl = _uriSerice.GetPaginationUri((int)months.NextPageNumber, months.PageSize, Url.RouteUrl(nameof(GetMonths))).ToString()
 
             };
 

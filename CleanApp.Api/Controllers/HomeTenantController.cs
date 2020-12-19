@@ -6,6 +6,7 @@ using CleanApp.Core.Interfaces.Services;
 using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Responses;
 using CleanApp.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ namespace CleanApp.Api.Controllers
 {
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    //[Authorize]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class HomeTenantController : ControllerBase
     {
@@ -52,8 +53,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = homeTenants.TotalPages,
                 HasNextPage = homeTenants.HasNextPage,
                 HasPreviousPage = homeTenants.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetHomeTenantPaginationUri(filters, Url.RouteUrl(nameof(GetHomeTenants))).ToString(),
-                PreviousPageUrl = _uriSerice.GetHomeTenantPaginationUri(filters, Url.RouteUrl(nameof(GetHomeTenants))).ToString()
+                NextPageUrl = _uriSerice.GetPaginationUri((int)homeTenants.NextPageNumber, homeTenants.PageSize, Url.RouteUrl(nameof(GetHomeTenants))).ToString(),
+                PreviousPageUrl = _uriSerice.GetPaginationUri((int)homeTenants.NextPageNumber, homeTenants.PageSize, Url.RouteUrl(nameof(GetHomeTenants))).ToString()
 
             };
 

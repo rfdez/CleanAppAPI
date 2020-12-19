@@ -1,4 +1,5 @@
 ﻿using CleanApp.Core.QueryFilters;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 
 namespace CleanApp.Infrastructure.Services
@@ -11,53 +12,84 @@ namespace CleanApp.Infrastructure.Services
             _baseUri = baseUri;
         }
 
-        public Uri GetMonthPaginationUri(MonthQueryFilter filters, string actionUrl)
+        public string GetCleanlinessFilterUri(CleanlinessQueryFilter filters)
         {
-            string uri = $"{_baseUri}{actionUrl}";
-
-            return new Uri(uri);
+            string _uri = string.Empty;
+            var filteredUri = QueryHelpers.AddQueryString(_uri, "CleanlinessDone", filters.CleanlinessDone.ToString());
+            filteredUri = QueryHelpers.AddQueryString(filteredUri, "RoomId", filters.RoomId.ToString());
+            filteredUri = filteredUri.Replace("?", "&");
+            return filteredUri;
         }
 
-        public Uri GetWeekPaginationUri(WeekQueryFilter filters, string actionUrl)
+        public string GetHomeFilterUri(HomeQueryFilter filters)
         {
-            string uri = $"{_baseUri}{actionUrl}";
-
-            return new Uri(uri);
+            string _uri = string.Empty;
+            var filteredUri = QueryHelpers.AddQueryString(_uri, "HomeAddress", filters.HomeAddress.ToString());
+            filteredUri = QueryHelpers.AddQueryString(filteredUri, "HomeCity", filters.HomeCity.ToString());
+            filteredUri = filteredUri.Replace("?", "&");
+            return filteredUri;
         }
 
-        public Uri GetTenantPaginationUri(TenantQueryFilter filters, string actionUrl)
+        public string GetHomeTenantFilterUri(HomeTenantQueryFilter filters)
         {
-            string uri = $"{_baseUri}{actionUrl}";
-
-            return new Uri(uri);
+            string _uri = string.Empty;
+            var filteredUri = QueryHelpers.AddQueryString(_uri, "TenantRole", filters.TenantRole.ToString());
+            filteredUri = QueryHelpers.AddQueryString(filteredUri, "TenantId", filters.TenantId.ToString());
+            filteredUri = filteredUri.Replace("?", "&");
+            return filteredUri;
         }
 
-        public Uri GetRoomPaginationUri(RoomQueryFilter filters, string actionUrl)
+        public string GetJobFilterUri(JobQueryFilter filters)
         {
-            string uri = $"{_baseUri}{actionUrl}";
-
-            return new Uri(uri);
+            string _uri = string.Empty;
+            var filteredUri = QueryHelpers.AddQueryString(_uri, "JobName", filters.JobName.ToString());
+            filteredUri = QueryHelpers.AddQueryString(filteredUri, "JobDescription", filters.JobDescription.ToString());
+            filteredUri = filteredUri.Replace("?", "&");
+            return filteredUri;
         }
 
-        public Uri GetHomePaginationUri(HomeQueryFilter filters, string actionUrl)
+        public string GetMonthFilterUri(MonthQueryFilter filters)
         {
-            string uri = $"{_baseUri}{actionUrl}";
-
-            return new Uri(uri);
+            string _uri = string.Empty;
+            var filteredUri = QueryHelpers.AddQueryString(_uri, "MonthValue", filters.MonthValue.ToString());
+            filteredUri = QueryHelpers.AddQueryString(filteredUri, "YearId", filters.YearId.ToString());
+            filteredUri = filteredUri.Replace("?", "&");
+            return filteredUri;
         }
 
-        public Uri GetJobPaginationUri(JobQueryFilter filters, string actionUrl)
+        public Uri GetPaginationUri(int pageNumer, int pageSize, string actionUrl)
         {
-            string uri = $"{_baseUri}{actionUrl}";
+            var _endpointUri = new Uri(string.Concat(_baseUri, actionUrl));
 
-            return new Uri(uri);
+            var pagedEndpointUri = QueryHelpers.AddQueryString(_endpointUri.ToString(), "PageNumber", pageNumer.ToString());
+            pagedEndpointUri = QueryHelpers.AddQueryString(pagedEndpointUri, "PageSize", pageSize.ToString());
+
+            return new Uri(pagedEndpointUri);
         }
 
-        public Uri GetHomeTenantPaginationUri(HomeTenantQueryFilter filters, string actionUrl)
+        public string GetRoomFilterUri(RoomQueryFilter filters)
         {
-            string uri = $"{_baseUri}{actionUrl}";
+            string _uri = string.Empty;
+            var filteredUri = QueryHelpers.AddQueryString(_uri, "RoomName", filters.RoomName.ToString());
+            filteredUri = filteredUri.Replace("?", "&");
+            return filteredUri;
+        }
 
-            return new Uri(uri);
+        public string GetTenantFilterUri(TenantQueryFilter filters)
+        {
+            string _uri = string.Empty;
+            var filteredUri = QueryHelpers.AddQueryString(_uri, "TenantName", filters.TenantName.ToString());
+            filteredUri = filteredUri.Replace("?", "&");
+            return filteredUri;
+        }
+
+        public string GetWeekFilterUri(WeekQueryFilter filters)
+        {
+            string _uri = string.Empty;
+            var filteredUri = QueryHelpers.AddQueryString(_uri, "MonthId", filters.MonthId.ToString());
+            filteredUri = QueryHelpers.AddQueryString(filteredUri, "WeekValue", filters.WeekValue.ToString());
+            filteredUri = filteredUri.Replace("?", "&");
+            return filteredUri;
         }
     }
 }

@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 
 namespace CleanApp.Api.Controllers
 {
-    [Authorize(Roles = nameof(RoleType.Administrator))]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
+    [Authorize(Roles = nameof(RoleType.Administrator))]
     [ApiController]
     public class WeekController : ControllerBase
     {
@@ -54,8 +54,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = weeks.TotalPages,
                 HasNextPage = weeks.HasNextPage,
                 HasPreviousPage = weeks.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetWeekPaginationUri(filters, Url.RouteUrl(nameof(GetWeeks))).ToString(),
-                PreviousPageUrl = _uriSerice.GetWeekPaginationUri(filters, Url.RouteUrl(nameof(GetWeeks))).ToString()
+                NextPageUrl = _uriSerice.GetPaginationUri((int)weeks.NextPageNumber, weeks.PageSize, Url.RouteUrl(nameof(GetWeeks))).ToString(),
+                PreviousPageUrl = _uriSerice.GetPaginationUri((int)weeks.NextPageNumber, weeks.PageSize, Url.RouteUrl(nameof(GetWeeks))).ToString()
             };
 
             var response = new ApiResponse<IEnumerable<WeekDto>>(weeksDto)

@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 
 namespace CleanApp.Api.Controllers
 {
-    [Authorize(Roles = nameof(RoleType.Administrator))]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
+    [Authorize(Roles = nameof(RoleType.Administrator))]
     [ApiController]
     public class YearController : ControllerBase
     {
