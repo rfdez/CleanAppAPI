@@ -23,7 +23,7 @@ namespace CleanApp.Core.Services
         public PagedList<Week> GetWeeks(WeekQueryFilter filters)
         {
             filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
-            filters.PageSize = filters.PageSize == 0 ? 4 : filters.PageSize;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.WeekPageSize : filters.PageSize;
 
             var weeks = _unitOfWork.WeekRepository.GetAll();
 

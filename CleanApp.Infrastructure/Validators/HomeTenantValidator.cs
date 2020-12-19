@@ -16,8 +16,6 @@ namespace CleanApp.Infrastructure.Validators
                 .NotEmpty();
 
             RuleFor(homeTenant => homeTenant.TenantRole)
-                .NotNull()
-                .NotEmpty()
                 .IsInEnum();
         }
     }

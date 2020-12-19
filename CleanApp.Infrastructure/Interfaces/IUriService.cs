@@ -11,5 +11,6 @@ namespace CleanApp.Infrastructure.Services
         Uri GetRoomPaginationUri(RoomQueryFilter filters, string actionUrl);
         Uri GetHomePaginationUri(HomeQueryFilter filters, string actionUrl);
         Uri GetJobPaginationUri(JobQueryFilter filters, string actionUrl);
+        Uri GetHomeTenantPaginationUri(HomeTenantQueryFilter filters, string actionUrl);
     }
 }

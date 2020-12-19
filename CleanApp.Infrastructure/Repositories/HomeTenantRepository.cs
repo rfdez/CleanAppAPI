@@ -48,5 +48,15 @@ namespace CleanApp.Infrastructure.Repositories
 
             _entities.Remove(homeTenant);
         }
+
+        public IEnumerable<HomeTenant> GetByHomeId(int homeId)
+        {
+            return _entities.Where(ht => ht.HomeId == homeId).AsEnumerable();
+        }
+
+        public IEnumerable<HomeTenant> GetByTenantId(int tenantId)
+        {
+            return _entities.Where(ht => ht.TenantId == tenantId).AsEnumerable();
+        }
     }
 }

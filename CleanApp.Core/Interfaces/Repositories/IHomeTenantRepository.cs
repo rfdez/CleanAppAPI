@@ -10,6 +10,10 @@ namespace CleanApp.Core.Interfaces.Repositories
 
         Task<HomeTenant> GetById(int homeId, int tenantId);
 
+        IEnumerable<HomeTenant> GetByHomeId(int homeId);
+
+        IEnumerable<HomeTenant> GetByTenantId(int tenantId);
+
         Task Add(HomeTenant homeTenant);
 
         void Update(HomeTenant homeTenant);

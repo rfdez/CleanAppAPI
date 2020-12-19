@@ -5,5 +5,9 @@
         public int DefaultPageSize { get; set; }
 
         public int DefaultPageNumber { get; set; }
+
+        public int MonthPageSize { get; set; }
+
+        public int WeekPageSize { get; set; }
     }
 }

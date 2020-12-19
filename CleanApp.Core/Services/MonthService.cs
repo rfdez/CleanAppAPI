@@ -23,7 +23,7 @@ namespace CleanApp.Core.Services
         public PagedList<Month> GetMonths(MonthQueryFilter filters)
         {
             filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
-            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.MonthPageSize : filters.PageSize;
 
             var months = _unitOfWork.MonthRepository.GetAll();
 
