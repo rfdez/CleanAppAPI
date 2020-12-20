@@ -22,24 +22,6 @@ namespace CleanApp.Core.Services
             _paginationOptions = options.Value;
         }
 
-        public async Task DeleteCleanliness(int roomId, int weekId)
-        {
-            var exists = await _unitOfWork.CleanlinessRepository.GetById(roomId, weekId);
-
-            if (exists == null)
-            {
-                throw new BusinessException("No existe el turno de limpieza que desea borrar.");
-            }
-
-            await _unitOfWork.CleanlinessRepository.Delete(roomId, weekId);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task<Cleanliness> GetCleanliness(int roomId, int weekId)
-        {
-            return await _unitOfWork.CleanlinessRepository.GetById(roomId, weekId) ?? throw new BusinessException("No existe el turno de limpieza."); ;
-        }
-
         public PagedList<Cleanliness> GetCleanlinesses(CleanlinessQueryFilter filters)
         {
             filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
@@ -73,6 +55,11 @@ namespace CleanApp.Core.Services
             var pagedHomeTenants = PagedList<Cleanliness>.Create(cleanlinesses.Count() > 0 ? cleanlinesses : throw new BusinessException("No hay turnos de limpieza."), filters.PageNumber, filters.PageSize);
 
             return pagedHomeTenants;
+        }
+
+        public async Task<Cleanliness> GetCleanliness(int roomId, int weekId)
+        {
+            return await _unitOfWork.CleanlinessRepository.GetById(roomId, weekId) ?? throw new BusinessException("No existe el turno de limpieza."); ;
         }
 
         public async Task InsertCleanliness(Cleanliness cleanliness)
@@ -127,6 +114,19 @@ namespace CleanApp.Core.Services
             }
 
             _unitOfWork.CleanlinessRepository.Update(cleanliness);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task DeleteCleanliness(int roomId, int weekId)
+        {
+            var exists = await _unitOfWork.CleanlinessRepository.GetById(roomId, weekId);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe el turno de limpieza que desea borrar.");
+            }
+
+            await _unitOfWork.CleanlinessRepository.Delete(roomId, weekId);
             await _unitOfWork.SaveChangesAsync();
         }
     }

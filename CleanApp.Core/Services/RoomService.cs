@@ -45,18 +45,48 @@ namespace CleanApp.Core.Services
 
         public async Task InsertRoom(Room room)
         {
+            var existsHome = await _unitOfWork.HomeRepository.GetById(room.HomeId);
+
+            if (existsHome == null)
+            {
+                throw new BusinessException("No existe la vivienda a asignar.");
+            }
+
             await _unitOfWork.RoomRepository.Add(room);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateRoomAsync(Room room)
         {
+            var exists = await _unitOfWork.RoomRepository.GetById(room.Id);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe la habitación a actualizar.");
+            }
+
+            var existsHome = await _unitOfWork.HomeRepository.GetById(room.HomeId);
+
+            if (existsHome == null)
+            {
+                throw new BusinessException("No existe la vivienda a asignar.");
+            }
+
             _unitOfWork.RoomRepository.Update(room);
             await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeleteRoom(int id)
         {
+            var exists = await _unitOfWork.RoomRepository.GetById(id);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe la habitación a eliminar.");
+            }
+
             await _unitOfWork.RoomRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

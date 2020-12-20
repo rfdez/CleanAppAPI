@@ -54,8 +54,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = weeks.TotalPages,
                 HasNextPage = weeks.HasNextPage,
                 HasPreviousPage = weeks.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetPaginationUri((int)weeks.NextPageNumber, weeks.PageSize, Url.RouteUrl(nameof(GetWeeks))).ToString(),
-                PreviousPageUrl = _uriSerice.GetPaginationUri((int)weeks.NextPageNumber, weeks.PageSize, Url.RouteUrl(nameof(GetWeeks))).ToString()
+                NextPageUrl = weeks.HasNextPage ? _uriSerice.GetPaginationUri((int)weeks.NextPageNumber, weeks.PageSize, Url.RouteUrl(nameof(GetWeeks))).ToString() : null,
+                PreviousPageUrl = weeks.HasPreviousPage ? _uriSerice.GetPaginationUri((int)weeks.NextPageNumber, weeks.PageSize, Url.RouteUrl(nameof(GetWeeks))).ToString() : null
             };
 
             var response = new ApiResponse<IEnumerable<WeekDto>>(weeksDto)

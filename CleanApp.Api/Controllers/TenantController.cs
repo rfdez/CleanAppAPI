@@ -53,8 +53,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = tenants.TotalPages,
                 HasNextPage = tenants.HasNextPage,
                 HasPreviousPage = tenants.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetPaginationUri((int)tenants.NextPageNumber, tenants.PageSize, Url.RouteUrl(nameof(GetTenants))).ToString(),
-                PreviousPageUrl = _uriSerice.GetPaginationUri((int)tenants.NextPageNumber, tenants.PageSize, Url.RouteUrl(nameof(GetTenants))).ToString()
+                NextPageUrl = tenants.HasNextPage ? _uriSerice.GetPaginationUri((int)tenants.NextPageNumber, tenants.PageSize, Url.RouteUrl(nameof(GetTenants))).ToString() : null,
+                PreviousPageUrl = tenants.HasPreviousPage ? _uriSerice.GetPaginationUri((int)tenants.NextPageNumber, tenants.PageSize, Url.RouteUrl(nameof(GetTenants))).ToString() : null
 
             };
 
@@ -96,7 +96,7 @@ namespace CleanApp.Api.Controllers
             await _tenantService.InsertTenant(tenant);
             tenantDto = _mapper.Map<TenantDto>(tenant);
 
-            return Created($"{tenantDto.Id}", new ApiResponse<TenantDto>(tenantDto));
+            return CreatedAtAction(nameof(GetTenant), new { id = tenantDto.Id }, new ApiResponse<TenantDto>(tenantDto));
         }
 
         /// <summary>

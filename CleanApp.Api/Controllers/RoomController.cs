@@ -53,8 +53,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = rooms.TotalPages,
                 HasNextPage = rooms.HasNextPage,
                 HasPreviousPage = rooms.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetPaginationUri((int)rooms.NextPageNumber, rooms.PageSize, Url.RouteUrl(nameof(GetRooms))).ToString(),
-                PreviousPageUrl = _uriSerice.GetPaginationUri((int)rooms.NextPageNumber, rooms.PageSize, Url.RouteUrl(nameof(GetRooms))).ToString()
+                NextPageUrl = rooms.HasNextPage ? _uriSerice.GetPaginationUri((int)rooms.NextPageNumber, rooms.PageSize, Url.RouteUrl(nameof(GetRooms))).ToString() : null,
+                PreviousPageUrl = rooms.HasPreviousPage ? _uriSerice.GetPaginationUri((int)rooms.NextPageNumber, rooms.PageSize, Url.RouteUrl(nameof(GetRooms))).ToString() : null
 
             };
 
@@ -123,7 +123,6 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador de la habitación</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteRoom))]
-
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteRoom(int id)
         {

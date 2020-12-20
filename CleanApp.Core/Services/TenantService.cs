@@ -20,24 +20,6 @@ namespace CleanApp.Core.Services
             _unitOfWork = unitOfWork;
             _paginationOptions = options.Value;
         }
-
-        public async Task DeleteTenant(int id)
-        {
-            var exists = await _unitOfWork.TenantRepository.GetById(id);
-
-            if (exists == null)
-            {
-                throw new BusinessException("No existe el inquilino a borrar.");
-            }
-
-            await _unitOfWork.TenantRepository.Delete(id);
-        }
-
-        public async Task<Tenant> GetTenant(int id)
-        {
-            return await _unitOfWork.TenantRepository.GetById(id) ?? throw new BusinessException("No existe el inquilino solicitado.");
-        }
-
         public PagedList<Tenant> GetTenants(TenantQueryFilter filters)
         {
             filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
@@ -50,9 +32,19 @@ namespace CleanApp.Core.Services
                 tenants = tenants.Where(t => t.TenantName.Normalize().ToLower() == filters.TenantName.Normalize().ToLower()).AsEnumerable();
             }
 
+            if (filters.AuthUser != null)
+            {
+                tenants = tenants.Where(t => t.AuthUser == filters.AuthUser).AsEnumerable();
+            }
+
             var pagedTenants = PagedList<Tenant>.Create(tenants.Count() > 0 ? tenants : throw new BusinessException("No hay inquilinos disponibles."), filters.PageNumber, filters.PageSize);
 
             return pagedTenants;
+        }
+
+        public async Task<Tenant> GetTenant(int id)
+        {
+            return await _unitOfWork.TenantRepository.GetById(id) ?? throw new BusinessException("No existe el inquilino solicitado.");
         }
 
         public async Task InsertTenant(Tenant tenant)
@@ -72,6 +64,7 @@ namespace CleanApp.Core.Services
             }
 
             await _unitOfWork.TenantRepository.Add(tenant);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateTenantAsync(Tenant tenant)
@@ -99,7 +92,21 @@ namespace CleanApp.Core.Services
                     throw new BusinessException("Las nuevas credenciales del inquilino deben existir.");
                 }
             }
+
             _unitOfWork.TenantRepository.Update(tenant);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task DeleteTenant(int id)
+        {
+            var exists = await _unitOfWork.TenantRepository.GetById(id);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe el inquilino a borrar.");
+            }
+
+            await _unitOfWork.TenantRepository.Delete(id);
             await _unitOfWork.SaveChangesAsync();
         }
     }

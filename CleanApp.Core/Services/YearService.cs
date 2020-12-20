@@ -50,25 +50,21 @@ namespace CleanApp.Core.Services
 
         public async Task UpdateYearAsync(Year year)
         {
-            var exsists = _unitOfWork.YearRepository.GetAll().Where(y => y.Id == year.Id).AsEnumerable();
+            var exsists = await _unitOfWork.YearRepository.GetById(year.Id);
 
-            if (exsists.Count() < 1)
+            if (exsists == null)
             {
                 throw new BusinessException("No existe el año solicitado.");
             }
 
-            var duplicated = _unitOfWork.YearRepository.GetAll().Except(exsists).Where(y => y.YearValue == year.YearValue);
+            var years = _unitOfWork.YearRepository.GetAll();
 
-            if (duplicated.Count() > 0)
+            if (years.Except(new[] { exsists }).Where(y => y.YearValue == year.YearValue).Count() > 0)
             {
                 throw new BusinessException("No puedes duplicar un año.");
             }
 
-            var currentYear = exsists.First();
-
-            currentYear.YearValue = year.YearValue;
             _unitOfWork.YearRepository.Update(year);
-
             await _unitOfWork.SaveChangesAsync();
         }
 

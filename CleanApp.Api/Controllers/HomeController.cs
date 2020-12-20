@@ -53,8 +53,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = homes.TotalPages,
                 HasNextPage = homes.HasNextPage,
                 HasPreviousPage = homes.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetPaginationUri((int)homes.NextPageNumber, homes.PageSize, Url.RouteUrl(nameof(GetHomes))).ToString(),
-                PreviousPageUrl = _uriSerice.GetPaginationUri((int)homes.NextPageNumber, homes.PageSize, Url.RouteUrl(nameof(GetHomes))).ToString()
+                NextPageUrl = homes.HasNextPage ? _uriSerice.GetPaginationUri((int)homes.NextPageNumber, homes.PageSize, Url.RouteUrl(nameof(GetHomes))).ToString() : null,
+                PreviousPageUrl = homes.HasPreviousPage ? _uriSerice.GetPaginationUri((int)homes.NextPageNumber, homes.PageSize, Url.RouteUrl(nameof(GetHomes))).ToString() : null
 
             };
 

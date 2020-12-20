@@ -54,8 +54,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = months.TotalPages,
                 HasNextPage = months.HasNextPage,
                 HasPreviousPage = months.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetPaginationUri((int)months.NextPageNumber, months.PageSize, Url.RouteUrl(nameof(GetMonths))).ToString(),
-                PreviousPageUrl = _uriSerice.GetPaginationUri((int)months.NextPageNumber, months.PageSize, Url.RouteUrl(nameof(GetMonths))).ToString()
+                NextPageUrl = months.HasNextPage ? _uriSerice.GetPaginationUri((int)months.NextPageNumber, months.PageSize, Url.RouteUrl(nameof(GetMonths))).ToString() : null,
+                PreviousPageUrl = months.HasPreviousPage ? _uriSerice.GetPaginationUri((int)months.NextPageNumber, months.PageSize, Url.RouteUrl(nameof(GetMonths))).ToString() : null
 
             };
 

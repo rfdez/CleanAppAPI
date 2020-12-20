@@ -53,8 +53,8 @@ namespace CleanApp.Api.Controllers
                 TotalPages = jobs.TotalPages,
                 HasNextPage = jobs.HasNextPage,
                 HasPreviousPage = jobs.HasPreviousPage,
-                NextPageUrl = _uriSerice.GetPaginationUri((int)jobs.NextPageNumber, jobs.PageSize, Url.RouteUrl(nameof(GetJobs))).ToString(),
-                PreviousPageUrl = _uriSerice.GetPaginationUri((int)jobs.NextPageNumber, jobs.PageSize, Url.RouteUrl(nameof(GetJobs))).ToString()
+                NextPageUrl = jobs.HasNextPage ? _uriSerice.GetPaginationUri((int)jobs.NextPageNumber, jobs.PageSize, Url.RouteUrl(nameof(GetJobs))).ToString() : null,
+                PreviousPageUrl = jobs.HasPreviousPage ? _uriSerice.GetPaginationUri((int)jobs.NextPageNumber, jobs.PageSize, Url.RouteUrl(nameof(GetJobs))).ToString() : null
 
             };
 

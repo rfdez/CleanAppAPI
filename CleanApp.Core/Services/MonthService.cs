@@ -96,6 +96,7 @@ namespace CleanApp.Core.Services
             }
 
             await _unitOfWork.MonthRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

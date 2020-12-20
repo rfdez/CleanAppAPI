@@ -7,6 +7,10 @@ namespace CleanApp.Infrastructure.Validators
     {
         public RoomValidator()
         {
+            RuleFor(room => room.HomeId)
+                .NotNull()
+                .NotEmpty();
+            
             RuleFor(room => room.RoomName)
                 .NotNull()
                 .NotEmpty()

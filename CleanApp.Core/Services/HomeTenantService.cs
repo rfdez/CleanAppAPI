@@ -21,24 +21,6 @@ namespace CleanApp.Core.Services
             _paginationOptions = options.Value;
         }
 
-        public async Task DeleteHomeTenant(int homeId, int tenantId)
-        {
-            var exists = await _unitOfWork.HomeTenantRepository.GetById(homeId, tenantId);
-
-            if (exists == null)
-            {
-                throw new BusinessException("No existe la relación");
-            }
-
-            await _unitOfWork.HomeTenantRepository.Delete(homeId, tenantId);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task<HomeTenant> GetHomeTenant(int homeId, int tenantId)
-        {
-            return await _unitOfWork.HomeTenantRepository.GetById(homeId, tenantId) ?? throw new BusinessException("El usuario indicado to tiene ninguna relacion con la vivienda indicada.");
-        }
-
         public PagedList<HomeTenant> GetHomeTenants(HomeTenantQueryFilter filters)
         {
             filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
@@ -69,6 +51,11 @@ namespace CleanApp.Core.Services
             return pagedHomeTenants;
         }
 
+        public async Task<HomeTenant> GetHomeTenant(int homeId, int tenantId)
+        {
+            return await _unitOfWork.HomeTenantRepository.GetById(homeId, tenantId) ?? throw new BusinessException("El usuario indicado to tiene ninguna relacion con la vivienda indicada.");
+        }
+
         public async Task InsertHomeTenant(HomeTenant homeTenant)
         {
             var exists = await _unitOfWork.HomeTenantRepository.GetById(homeTenant.HomeId, homeTenant.TenantId);
@@ -92,6 +79,19 @@ namespace CleanApp.Core.Services
             }
 
             _unitOfWork.HomeTenantRepository.Update(homeTenant);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task DeleteHomeTenant(int homeId, int tenantId)
+        {
+            var exists = await _unitOfWork.HomeTenantRepository.GetById(homeId, tenantId);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe la relación");
+            }
+
+            await _unitOfWork.HomeTenantRepository.Delete(homeId, tenantId);
             await _unitOfWork.SaveChangesAsync();
         }
     }

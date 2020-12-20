@@ -28,6 +28,26 @@ namespace CleanApp.Core.Services
 
             var homes = _unitOfWork.HomeRepository.GetAll();
 
+            if (filters.HomeAddress != null)
+            {
+                homes = homes.Where(h => h.HomeAddress == filters.HomeAddress).AsEnumerable();
+            }
+
+            if (filters.HomeCity != null)
+            {
+                homes = homes.Where(h => h.HomeCity == filters.HomeCity).AsEnumerable();
+            }
+
+            if (filters.HomeCountry != null)
+            {
+                homes = homes.Where(h => h.HomeCountry == filters.HomeCountry).AsEnumerable();
+            }
+
+            if (filters.HomeZipCode != null)
+            {
+                homes = homes.Where(h => h.HomeZipCode == filters.HomeZipCode).AsEnumerable();
+            }
+
             var pagedHomes = PagedList<Home>.Create(homes.Count() > 0 ? homes : throw new BusinessException("No hay viviendas disponibles."), filters.PageNumber, filters.PageSize);
 
             return pagedHomes;
@@ -64,6 +84,7 @@ namespace CleanApp.Core.Services
             }
 
             await _unitOfWork.HomeRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

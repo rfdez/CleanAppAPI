@@ -41,6 +41,7 @@ namespace CleanApp.Core.Services
         public async Task InsertJob(Job job)
         {
             await _unitOfWork.JobRepository.Add(job);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateJobAsync(Job job)
@@ -59,6 +60,7 @@ namespace CleanApp.Core.Services
             }
 
             await _unitOfWork.JobRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
