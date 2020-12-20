@@ -7,6 +7,6 @@ namespace CleanApp.Core.Services.Auth
     public interface IAuthenticationService
     {
         Task<Authentication> GetLoginByCredentials(UserLogin login);
-        Task RegisterUser(Authentication authentication, string currentUserRole);
+        Task RegisterUser(Authentication authentication);
     }
 }

@@ -4,10 +4,10 @@ using CleanApp.Core.Entities.Auth;
 using CleanApp.Core.Responses;
 using CleanApp.Core.Services.Auth;
 using CleanApp.Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CleanApp.Api.Auth.Controllers
@@ -35,14 +35,14 @@ namespace CleanApp.Api.Auth.Controllers
         /// <param name="authenticationDto">Datos del usuario</param>
         /// <returns>Autenticación</returns>
         [HttpPost(Name = nameof(RegisterUser))]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(ApiResponse<AuthenticationDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> RegisterUser(AuthenticationDto authenticationDto)
         {
             var user = _mapper.Map<Authentication>(authenticationDto);
             user.UserPassword = _passwordService.Hash(user.UserPassword);
-            string currentUserRole = User.FindFirstValue(ClaimTypes.Role);
 
-            await _authenticationService.RegisterUser(user, currentUserRole);
+            await _authenticationService.RegisterUser(user);
 
             authenticationDto = _mapper.Map<AuthenticationDto>(user);
             authenticationDto.UserPassword = null;
