@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace CleanApp.Infrastructure.Extensions
 {
@@ -73,15 +75,21 @@ namespace CleanApp.Infrastructure.Extensions
             return services;
         }
 
-        public static IServiceCollection AddSwagger(this IServiceCollection services, string xmlFileName)
+        public static IServiceCollection AddSwagger(this IServiceCollection services, Assembly assembly)
         {
             services.AddSwaggerGen(doc =>
             {
                 doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Cleap App API", Version = "v1" });
 
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
+                var xmlDocs = assembly.GetReferencedAssemblies()
+                .Union(new AssemblyName[] { assembly.GetName() })
+                .Select(a => Path.Combine(Path.GetDirectoryName(assembly.Location), $"{a.Name}.xml"))
+                .Where(f => File.Exists(f)).ToArray();
 
-                doc.IncludeXmlComments(xmlPath);
+                Array.ForEach(xmlDocs, d =>
+                {
+                    doc.IncludeXmlComments(d);
+                });
             });
 
             return services;

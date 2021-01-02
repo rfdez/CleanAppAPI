@@ -56,7 +56,7 @@ namespace CleanApp.Api
             services.AddConfigurations(Configuration);
             services.AddDbContexts(Configuration);
             services.AddServices();
-            services.AddSwagger($"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+            services.AddSwagger(Assembly.GetExecutingAssembly());
 
             services.AddAuthentication(options =>
             {

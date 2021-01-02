@@ -1,14 +1,12 @@
 ﻿namespace CleanApp.Core.Enumerations
 {
+    /// <summary>
+    /// Tipo de rol en la aplicación
+    /// </summary>
     public enum RoleType
     {
-        /// <summary>
-        /// Administrador
-        /// </summary>
         Administrator,
-        /// <summary>
-        /// Consumidor
-        /// </summary>
+
         Consumer
     }
 }
