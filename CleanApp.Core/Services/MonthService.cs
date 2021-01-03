@@ -27,11 +27,11 @@ namespace CleanApp.Core.Services
 
             var months = _unitOfWork.MonthRepository.GetAll();
 
-            if (filters.YearId != null)
+            if (filters.YearId != 0)
             {
                 months = months.Where(m => m.YearId == filters.YearId).AsEnumerable();
 
-                if (filters.MonthValue != null)
+                if (filters.MonthValue != 0)
                 {
                     months = months.Where(m => m.MonthValue == filters.MonthValue).AsEnumerable();
                 }

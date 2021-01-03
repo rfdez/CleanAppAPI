@@ -2,7 +2,7 @@
 {
     public class MonthQueryFilter : BaseQueryFilter
     {
-        public int? YearId { get; set; }
-        public int? MonthValue { get; set; }
+        public int YearId { get; set; }
+        public int MonthValue { get; set; }
     }
 }

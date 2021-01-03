@@ -18,7 +18,7 @@ namespace CleanApp.Core.Services
 
         public IEnumerable<Year> GetYears(YearQueryFilter filters)
         {
-            if (filters.YearValue != null)
+            if (filters.YearValue != 0)
             {
                 var years = _unitOfWork.YearRepository.GetAll();
                 return years.Where(y => y.YearValue == filters.YearValue).Count() > 0 ? years.Where(y => y.YearValue == filters.YearValue) : throw new BusinessException("No existe el año con el valor indicado.");

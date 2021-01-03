@@ -28,15 +28,15 @@ namespace CleanApp.Core.Services
 
             var homeTenants = _unitOfWork.HomeTenantRepository.GetAll();
 
-            if (filters.HomeId != null && filters.TenantId != null)
+            if (filters.HomeId != 0 && filters.TenantId != 0)
             {
                 homeTenants = homeTenants.Where(ht => ht.HomeId == filters.HomeId && ht.TenantId == filters.TenantId).AsEnumerable();
             }
-            else if (filters.HomeId != null)
+            else if (filters.HomeId != 0)
             {
                 homeTenants = _unitOfWork.HomeTenantRepository.GetByHomeId((int)filters.HomeId);
             }
-            else if (filters.TenantId != null)
+            else if (filters.TenantId != 0)
             {
                 homeTenants = _unitOfWork.HomeTenantRepository.GetByTenantId((int)filters.TenantId);
             }

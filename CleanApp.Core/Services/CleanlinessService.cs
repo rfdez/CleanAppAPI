@@ -29,20 +29,20 @@ namespace CleanApp.Core.Services
 
             var cleanlinesses = _unitOfWork.CleanlinessRepository.GetAll();
 
-            if (filters.RoomId != null && filters.WeekId != null)
+            if (filters.RoomId != 0 && filters.WeekId != 0)
             {
                 cleanlinesses = cleanlinesses.Where(c => c.RoomId == filters.RoomId && c.WeekId == filters.WeekId).AsEnumerable();
             }
-            else if (filters.RoomId != null)
+            else if (filters.RoomId != 0)
             {
                 cleanlinesses = _unitOfWork.CleanlinessRepository.GetByRoomId((int)filters.RoomId);
             }
-            else if (filters.WeekId != null)
+            else if (filters.WeekId != 0)
             {
                 cleanlinesses = _unitOfWork.CleanlinessRepository.GetByWeekId((int)filters.WeekId);
             }
 
-            if (filters.TenantId != null)
+            if (filters.TenantId != 0)
             {
                 cleanlinesses = cleanlinesses.Where(c => c.TenantId == filters.TenantId).AsEnumerable();
             }

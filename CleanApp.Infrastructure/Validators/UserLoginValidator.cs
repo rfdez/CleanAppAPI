@@ -1,8 +1,5 @@
 ﻿using CleanApp.Core.Entities;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CleanApp.Infrastructure.Validators
 {

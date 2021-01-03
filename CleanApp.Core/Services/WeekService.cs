@@ -27,11 +27,11 @@ namespace CleanApp.Core.Services
 
             var weeks = _unitOfWork.WeekRepository.GetAll();
 
-            if (filters.MonthId != null)
+            if (filters.MonthId != 0)
             {
                 weeks = weeks.Where(w => w.MonthId == filters.MonthId).AsEnumerable();
 
-                if (filters.WeekValue != null)
+                if (filters.WeekValue != 0)
                 {
                     weeks = weeks.Where(w => w.WeekValue == filters.WeekValue).AsEnumerable();
                 }

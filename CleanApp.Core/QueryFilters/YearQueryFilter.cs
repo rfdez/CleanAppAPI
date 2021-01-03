@@ -2,6 +2,6 @@
 {
     public class YearQueryFilter : BaseQueryFilter
     {
-        public int? YearValue { get; set; }
+        public int YearValue { get; set; }
     }
 }
