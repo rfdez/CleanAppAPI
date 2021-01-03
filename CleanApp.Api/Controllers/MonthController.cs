@@ -19,7 +19,7 @@ namespace CleanApp.Api.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
-    [Authorize(Roles = nameof(RoleType.Administrator))]
+    [Authorize]
     [ApiController]
     public class MonthController : ControllerBase
     {
@@ -90,6 +90,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="monthDto">Mes a insertar</param>
         /// <returns>Mes insertado</returns>
         [HttpPost(Name = nameof(InsertMonth))]
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertMonth(MonthDto monthDto)
         {
@@ -107,6 +108,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="monthDto">Nuevo valor del mes</param>
         /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateMonthAsync))]
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateMonthAsync(int id, MonthDto monthDto)
         {
@@ -124,7 +126,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador del mes</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteMonth))]
-
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteMonth(int id)
         {

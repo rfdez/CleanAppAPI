@@ -76,13 +76,36 @@ namespace CleanApp.Infrastructure.Extensions
             return services;
         }
 
-        public static IServiceCollection AddSwagger(this IServiceCollection services, Assembly assembly)
+        public static IServiceCollection AddSwagger(this IServiceCollection services, Assembly assembly, string authenticationScheme)
         {
             services.AddSwaggerGen(doc =>
             {
                 doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Cleap App API", Version = "v1" });
 
                 doc.AddFluentValidationRules();
+
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Name = "JWT Authentication",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+
+                    Reference = new OpenApiReference
+                    {
+                        Id = authenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+                doc.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+
+                doc.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { securityScheme, Array.Empty<string>() }
+                });
 
                 var xmlDocs = assembly.GetReferencedAssemblies()
                 .Union(new AssemblyName[] { assembly.GetName() })

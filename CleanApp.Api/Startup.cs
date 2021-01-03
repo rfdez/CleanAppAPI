@@ -58,8 +58,6 @@ namespace CleanApp.Api
             services.AddConfigurations(Configuration);
             services.AddDbContexts(Configuration);
             services.AddServices();
-            services.AddSwaggerGenNewtonsoftSupport();
-            services.AddSwagger(Assembly.GetExecutingAssembly());
 
             services.AddAuthentication(options =>
             {
@@ -79,6 +77,9 @@ namespace CleanApp.Api
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Authentication:SecretKey"]))
                 };
             });
+
+            services.AddSwaggerGenNewtonsoftSupport();
+            services.AddSwagger(Assembly.GetExecutingAssembly(), JwtBearerDefaults.AuthenticationScheme);
 
             services.AddMvc(setup =>
             {

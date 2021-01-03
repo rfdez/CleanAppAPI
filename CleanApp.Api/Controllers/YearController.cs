@@ -17,7 +17,7 @@ namespace CleanApp.Api.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
-    [Authorize(Roles = nameof(RoleType.Administrator))]
+    [Authorize]
     [ApiController]
     public class YearController : ControllerBase
     {
@@ -69,6 +69,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="yearDto">Valor del año</param>
         /// <returns>El año insertado</returns>
         [HttpPost(Name = nameof(InsertYear))]
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesResponseType(typeof(ApiResponse<MonthDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertYear(YearDto yearDto)
         {
@@ -88,6 +89,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="yearDto">Nuevos datos del año</param>
         /// <returns>Año actualizado</returns>
         [HttpPut("{id}", Name = nameof(UpdateYearAsync))]
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateYearAsync(int id, YearDto yearDto)
         {
@@ -104,6 +106,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Id del año</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteYear))]
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteYear(int id)
         {

@@ -19,7 +19,7 @@ namespace CleanApp.Api.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
-    [Authorize(Roles = nameof(RoleType.Administrator))]
+    [Authorize]
     [ApiController]
     public class WeekController : ControllerBase
     {
@@ -89,6 +89,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="weekDto">Semana a insertar</param>
         /// <returns>Semana creada</returns>
         [HttpPost(Name = nameof(InsertWeek))]
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesResponseType(typeof(ApiResponse<WeekDto>), StatusCodes.Status201Created)]
         public async Task<IActionResult> InsertWeek(WeekDto weekDto)
         {
@@ -106,6 +107,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="weekDto">Nuevo valor para la semana</param>
         /// <returns></returns>
         [HttpPut("{id}", Name = nameof(UpdateWeekAsync))]
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateWeekAsync(int id, WeekDto weekDto)
         {
@@ -123,6 +125,7 @@ namespace CleanApp.Api.Controllers
         /// <param name="id">Identificador de la semana</param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = nameof(DeleteWeek))]
+        [Authorize(Roles = nameof(RoleType.Administrator))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteWeek(int id)
         {
