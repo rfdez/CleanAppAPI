@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Reflection;
 using System.Text;
@@ -47,7 +48,8 @@ namespace CleanApp.Api
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            })
+                options.SerializerSettings.Converters.Add(new StringEnumConverter());
+        })
             .ConfigureApiBehaviorOptions(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -56,6 +58,7 @@ namespace CleanApp.Api
             services.AddConfigurations(Configuration);
             services.AddDbContexts(Configuration);
             services.AddServices();
+            services.AddSwaggerGenNewtonsoftSupport();
             services.AddSwagger(Assembly.GetExecutingAssembly());
 
             services.AddAuthentication(options =>

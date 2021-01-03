@@ -7,7 +7,7 @@
         /// </summary>
         public int Id { get; set; }
         /// <summary>
-        /// Valor num;erico del mes
+        /// Valor numérico del mes
         /// </summary>
         public int MonthValue { get; set; }
         /// <summary>

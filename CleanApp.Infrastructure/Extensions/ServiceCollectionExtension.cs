@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Linq;
@@ -80,6 +81,8 @@ namespace CleanApp.Infrastructure.Extensions
             services.AddSwaggerGen(doc =>
             {
                 doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Cleap App API", Version = "v1" });
+
+                doc.AddFluentValidationRules();
 
                 var xmlDocs = assembly.GetReferencedAssemblies()
                 .Union(new AssemblyName[] { assembly.GetName() })
