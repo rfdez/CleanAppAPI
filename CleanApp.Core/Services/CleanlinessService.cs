@@ -35,11 +35,11 @@ namespace CleanApp.Core.Services
             }
             else if (filters.RoomId != 0)
             {
-                cleanlinesses = _unitOfWork.CleanlinessRepository.GetByRoomId((int)filters.RoomId);
+                cleanlinesses = _unitOfWork.CleanlinessRepository.GetByRoomId(filters.RoomId);
             }
             else if (filters.WeekId != 0)
             {
-                cleanlinesses = _unitOfWork.CleanlinessRepository.GetByWeekId((int)filters.WeekId);
+                cleanlinesses = _unitOfWork.CleanlinessRepository.GetByWeekId(filters.WeekId);
             }
 
             if (filters.TenantId != 0)

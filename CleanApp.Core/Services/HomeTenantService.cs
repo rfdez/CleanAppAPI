@@ -34,11 +34,11 @@ namespace CleanApp.Core.Services
             }
             else if (filters.HomeId != 0)
             {
-                homeTenants = _unitOfWork.HomeTenantRepository.GetByHomeId((int)filters.HomeId);
+                homeTenants = _unitOfWork.HomeTenantRepository.GetByHomeId(filters.HomeId);
             }
             else if (filters.TenantId != 0)
             {
-                homeTenants = _unitOfWork.HomeTenantRepository.GetByTenantId((int)filters.TenantId);
+                homeTenants = _unitOfWork.HomeTenantRepository.GetByTenantId(filters.TenantId);
             }
 
             if (filters.TenantRole != null)
