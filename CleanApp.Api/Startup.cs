@@ -36,7 +36,9 @@ namespace CleanApp.Api
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("*");
+                        builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                     });
             });
 
@@ -106,8 +108,8 @@ namespace CleanApp.Api
             });
             app.UseRouting();
             app.UseAuthentication();
-            app.UseAuthorization();
             app.UseCors();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
