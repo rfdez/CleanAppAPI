@@ -29,12 +29,12 @@ namespace CleanApp.Core.Services
 
             if (filters.TenantName != null)
             {
-                tenants = tenants.Where(t => t.TenantName.Normalize().ToLower() == filters.TenantName.Normalize().ToLower()).AsEnumerable();
+                tenants = tenants.Where(t => t.TenantName.ToLower().Contains(filters.TenantName)).AsEnumerable();
             }
 
             if (filters.AuthUser != null)
             {
-                tenants = tenants.Where(t => t.AuthUser == filters.AuthUser).AsEnumerable();
+                tenants = tenants.Where(t => t.AuthUser.ToLower().Contains(filters.AuthUser)).AsEnumerable();
             }
 
             var pagedTenants = PagedList<Tenant>.Create(tenants.Count() > 0 ? tenants : throw new BusinessException("No hay inquilinos disponibles."), filters.PageNumber, filters.PageSize);

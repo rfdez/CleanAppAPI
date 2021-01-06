@@ -1,13 +1,13 @@
-﻿using CleanApp.Core.Entities;
+﻿using CleanApp.Core.CustomEntities;
+using CleanApp.Core.Entities;
 using CleanApp.Core.QueryFilters;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CleanApp.Core.Services
 {
     public interface IYearService
     {
-        IEnumerable<Year> GetYears(YearQueryFilter filters);
+        PagedList<Year> GetYears(YearQueryFilter filters);
 
         Task<Year> GetYear(int id);
 

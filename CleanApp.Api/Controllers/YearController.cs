@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using CleanApp.Core.CustomEntities;
 using CleanApp.Core.DTOs;
 using CleanApp.Core.Entities;
 using CleanApp.Core.Enumerations;
 using CleanApp.Core.QueryFilters;
 using CleanApp.Core.Responses;
 using CleanApp.Core.Services;
+using CleanApp.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,11 +25,13 @@ namespace CleanApp.Api.Controllers
     {
         private readonly IYearService _yearService;
         private readonly IMapper _mapper;
+        private readonly IUriService _uriSerice;
 
-        public YearController(IYearService yearService, IMapper mapper)
+        public YearController(IYearService yearService, IMapper mapper, IUriService uriService)
         {
             _yearService = yearService;
             _mapper = mapper;
+            _uriSerice = uriService;
         }
 
         /// <summary>
@@ -41,7 +45,23 @@ namespace CleanApp.Api.Controllers
             var years = _yearService.GetYears(filters);
             var yearsDto = _mapper.Map<IEnumerable<YearDto>>(years);
 
-            var response = new ApiResponse<IEnumerable<YearDto>>(yearsDto);
+            var metadata = new Metadata
+            {
+                TotalCount = years.TotalCount,
+                PageSize = years.PageSize,
+                CurrentPage = years.CurrentPage,
+                TotalPages = years.TotalPages,
+                HasNextPage = years.HasNextPage,
+                HasPreviousPage = years.HasPreviousPage,
+                NextPageUrl = years.HasNextPage ? _uriSerice.GetPaginationUri((int)years.NextPageNumber, years.PageSize, Url.RouteUrl(nameof(GetYears))).ToString() : null,
+                PreviousPageUrl = years.HasPreviousPage ? _uriSerice.GetPaginationUri((int)years.NextPageNumber, years.PageSize, Url.RouteUrl(nameof(GetYears))).ToString() : null
+
+            };
+
+            var response = new ApiResponse<IEnumerable<YearDto>>(yearsDto)
+            {
+                Meta = metadata
+            };
 
             return Ok(response);
         }

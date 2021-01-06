@@ -28,6 +28,21 @@ namespace CleanApp.Core.Services
 
             var jobs = _unitOfWork.JobRepository.GetAll();
 
+            if (filters.RoomId != 0)
+            {
+                jobs = jobs.Where(j => j.RoomId == filters.RoomId).AsEnumerable();
+            }
+
+            if (filters.JobName != null)
+            {
+                jobs = jobs.Where(j => j.JobName.ToLower().Contains(filters.JobName)).AsEnumerable();
+            }
+
+            if (filters.JobDescription != null)
+            {
+                jobs = jobs.Where(j => j.JobDescription.ToLower().Contains(filters.JobDescription)).AsEnumerable();
+            }
+
             var pagedJobs = PagedList<Job>.Create(jobs.Count() > 0 ? jobs : throw new BusinessException("No hay tareas disponibles."), filters.PageNumber, filters.PageSize);
 
             return pagedJobs;
@@ -40,12 +55,36 @@ namespace CleanApp.Core.Services
 
         public async Task InsertJob(Job job)
         {
+            var existsRoom = await _unitOfWork.RoomRepository.GetById(job.RoomId);
+
+            if (existsRoom == null)
+            {
+                throw new BusinessException("No existe la habitación a asignar.");
+            }
+
             await _unitOfWork.JobRepository.Add(job);
             await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateJobAsync(Job job)
         {
+            var exists = await _unitOfWork.JobRepository.GetById(job.Id);
+
+            if (exists == null)
+            {
+                throw new BusinessException("No existe la tarea solicitada.");
+            }
+
+            if (job.RoomId != exists.RoomId)
+            {
+                var existsRoom = await _unitOfWork.RoomRepository.GetById(job.RoomId);
+
+                if (existsRoom == null)
+                {
+                    throw new BusinessException("No existe la habitación a asignar.");
+                }
+            }
+
             _unitOfWork.JobRepository.Update(job);
             await _unitOfWork.SaveChangesAsync();
         }

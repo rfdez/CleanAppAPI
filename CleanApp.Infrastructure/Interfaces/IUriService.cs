@@ -14,5 +14,6 @@ namespace CleanApp.Infrastructure.Services
         string GetJobFilterUri(JobQueryFilter filters);
         string GetHomeTenantFilterUri(HomeTenantQueryFilter filters);
         string GetCleanlinessFilterUri(CleanlinessQueryFilter filters);
+        string GetYearFilterUri(YearQueryFilter filters);
     }
 }

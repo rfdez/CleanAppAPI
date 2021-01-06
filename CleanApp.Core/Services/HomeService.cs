@@ -30,22 +30,22 @@ namespace CleanApp.Core.Services
 
             if (filters.HomeAddress != null)
             {
-                homes = homes.Where(h => h.HomeAddress == filters.HomeAddress).AsEnumerable();
+                homes = homes.Where(h => h.HomeAddress.ToLower().Contains(filters.HomeAddress)).AsEnumerable();
             }
 
             if (filters.HomeCity != null)
             {
-                homes = homes.Where(h => h.HomeCity == filters.HomeCity).AsEnumerable();
+                homes = homes.Where(h => h.HomeCity.ToLower().Contains(filters.HomeCity)).AsEnumerable();
             }
 
             if (filters.HomeCountry != null)
             {
-                homes = homes.Where(h => h.HomeCountry == filters.HomeCountry).AsEnumerable();
+                homes = homes.Where(h => h.HomeCountry.ToLower().Contains(filters.HomeCountry)).AsEnumerable();
             }
 
             if (filters.HomeZipCode != null)
             {
-                homes = homes.Where(h => h.HomeZipCode == filters.HomeZipCode).AsEnumerable();
+                homes = homes.Where(h => h.HomeZipCode.Contains(filters.HomeZipCode)).AsEnumerable();
             }
 
             var pagedHomes = PagedList<Home>.Create(homes.Count() > 0 ? homes : throw new BusinessException("No hay viviendas disponibles."), filters.PageNumber, filters.PageSize);

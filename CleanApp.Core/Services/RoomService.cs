@@ -30,7 +30,7 @@ namespace CleanApp.Core.Services
 
             if (filters.RoomName != null)
             {
-                rooms = rooms.Where(r => r.RoomName == filters.RoomName).AsEnumerable();
+                rooms = rooms.Where(r => r.RoomName.ToLower().Contains(filters.RoomName)).AsEnumerable();
             }
 
             var pagedRooms = PagedList<Room>.Create(rooms.Count() > 0 ? rooms : throw new BusinessException("No hay habitaciones disponibles."), filters.PageNumber, filters.PageSize);

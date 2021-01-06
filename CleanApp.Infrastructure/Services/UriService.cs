@@ -91,5 +91,13 @@ namespace CleanApp.Infrastructure.Services
             filteredUri = filteredUri.Replace("?", "&");
             return filteredUri;
         }
+
+        public string GetYearFilterUri(YearQueryFilter filters)
+        {
+            string _uri = string.Empty;
+            var filteredUri = QueryHelpers.AddQueryString(_uri, "YearValue", filters.YearValue.ToString());
+            filteredUri = filteredUri.Replace("?", "&");
+            return filteredUri;
+        }
     }
 }

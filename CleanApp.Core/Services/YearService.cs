@@ -1,8 +1,10 @@
-﻿using CleanApp.Core.Entities;
+﻿using CleanApp.Core.CustomEntities;
+using CleanApp.Core.Entities;
 using CleanApp.Core.Exceptions;
 using CleanApp.Core.Interfaces;
 using CleanApp.Core.QueryFilters;
-using System.Collections.Generic;
+using CleanApp.Infrastructure.Options;
+using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,20 +13,28 @@ namespace CleanApp.Core.Services
     public class YearService : IYearService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public YearService(IUnitOfWork unitOfWork)
+        private readonly PaginationOptions _paginationOptions;
+        public YearService(IUnitOfWork unitOfWork, IOptions<PaginationOptions> options)
         {
             _unitOfWork = unitOfWork;
+            _paginationOptions = options.Value;
         }
 
-        public IEnumerable<Year> GetYears(YearQueryFilter filters)
+        public PagedList<Year> GetYears(YearQueryFilter filters)
         {
+            filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+
+            var years = _unitOfWork.YearRepository.GetAll();
+
             if (filters.YearValue != 0)
             {
-                var years = _unitOfWork.YearRepository.GetAll();
-                return years.Where(y => y.YearValue == filters.YearValue).Count() > 0 ? years.Where(y => y.YearValue == filters.YearValue) : throw new BusinessException("No existe el año con el valor indicado.");
+                years = years.Where(y => y.YearValue == filters.YearValue).AsEnumerable();
             }
 
-            return _unitOfWork.YearRepository.GetAll().Count() > 0 ? _unitOfWork.YearRepository.GetAll() : throw new BusinessException("No existen años en nuestros datos.");
+            var pagedYears = PagedList<Year>.Create(years.Count() > 0 ? years : throw new BusinessException("No hay años disponibles."), filters.PageNumber, filters.PageSize);
+
+            return pagedYears;
         }
 
         public async Task<Year> GetYear(int id)
