@@ -51,6 +51,47 @@ namespace CleanApp.Api.Auth.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Validar token para iniciar sesión
+        /// </summary>
+        /// <param name="token">Token para validar</param>
+        /// <returns></returns>
+        [HttpPost("ValidateToken", Name = nameof(ValidateToken))]
+        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+        public IActionResult ValidateToken(string token)
+        {
+            var response = new ApiResponse<bool>(false);
+
+            var _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"]));
+            var issuer = _configuration["Authentication:Issuer"];
+            var audience = _configuration["Authentication:Audience"];
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = _symmetricSecurityKey
+                }, out SecurityToken securityToken);
+
+                response.Data = true;
+            }
+            catch
+            {
+                response.Data = false;
+            }
+
+
+            return Ok(response);
+        }
+
         #region Private methods
 
         private async Task<Authentication> ValidateUser(UserLogin login)
